@@ -2,21 +2,24 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import { Home } from '../../pages/home/Home';
-import { colors } from '../../styles/colors';
+import { Home } from '../../screens/home';
+import { useThemeStyle } from '../themeContextProvider';
+import { getStylesComponent } from './styles';
 
 const Tab = createBottomTabNavigator();
 
 export function NavigatorTab() {
+	const styles = useThemeStyle(getStylesComponent);
+
 	return (
-		<NavigationContainer		>
+		<NavigationContainer>
 			<Tab.Navigator
-				screenOptions={({ route }) => ({
+				screenOptions={() => ({
 					headerShown: false,
-					tabBarActiveTintColor: colors.tertiary,
+					tabBarActiveTintColor: styles.tabBarActive,
 					tabBarStyle: {
-						backgroundColor: colors.primary,
-						borderTopWidth: 0
+						backgroundColor: styles.tabBarStyle.backgroundColor,
+						borderTopWidth: styles.tabBarStyle.borderTopWidth
 					},
 					tabBarIcon: ({ focused, color, size }) => {
 						return <MaterialIcon name="timeline" size={size} color={color} />;
