@@ -41,7 +41,74 @@ export const getStylesComponent = (theme: ThemeType) => {
 			maxHeight: 400
 		},
 		post: {
-			marginBottom: 12
+			marginBottom: 26
+		},
+		footerPost: {
+			flexDirection: 'row',
+			justifyContent: 'space-between',
+			paddingBottom: 10,
+			borderBottomColor: theme.colors.textInfo,
+			borderBottomWidth: .5,
+			position: 'relative'
+		},
+		footerIconThumb: {
+			color: '#fff',
+			backgroundColor: '#0082FD',
+			width: 22,
+			height: 22,
+			borderRadius: 10,
+			alignContent: 'center',
+			alignItems: 'center',
+			textAlign: 'center',
+			textAlignVertical: 'center',
+			borderColor: '#fff',
+			borderWidth: 2
+		},
+		footerIconFavorite: {
+			color: '#fff',
+			backgroundColor: '#F14538',
+			width: 22,
+			height: 22,
+			borderRadius: 10,
+			alignContent: 'center',
+			alignItems: 'center',
+			textAlign: 'center',
+			textAlignVertical: 'center',
+			borderColor: '#fff',
+			borderWidth: 2,
+			position: 'absolute',
+			left: 18
+		},
+		footerReactions: {
+			flexDirection: 'row',
+		},
+		footerReactionsNumber: {
+			marginLeft: 24,
+			color: theme.colors.secondary,
+			alignSelf: 'center'
+		},
+		footerCommentsInfo: {
+			color: theme.colors.textInfo,
+			alignSelf: 'center'
+		},
+		actionsButton: {
+			flex: 1,
+			minHeight: 40,
+			justifyContent: 'center',
+			flexDirection: 'row',
+			alignItems: 'center',
+		},
+		actionsPost: {
+			flexDirection: 'row',
+		},
+		actionsIcon: {
+			color: theme.colors.secondary,
+			marginRight: 12,
+			fontSize: 18
+		},
+		actionsText: {
+			color: theme.colors.secondary,
+			fontSize: 18
 		}
 	});
 };

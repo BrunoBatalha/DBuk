@@ -7,7 +7,6 @@ export const getStylesComponent = (theme: ThemeType) => {
 			height: '100%',
 			backgroundColor: theme.colors.primary,
 			paddingHorizontal: 16,
-			paddingVertical: 24
 		}
 	})
 }

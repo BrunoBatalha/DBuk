@@ -18,11 +18,12 @@ export function NavigatorTab() {
 					headerShown: false,
 					tabBarActiveTintColor: styles.tabBarActive,
 					tabBarStyle: {
-						backgroundColor: styles.tabBarStyle.backgroundColor,
+						//backgroundColor: styles.tabBarStyle.backgroundColor,
+						backgroundColor: 'red',
 						borderTopWidth: styles.tabBarStyle.borderTopWidth
 					},
 					tabBarIcon: ({ focused, color, size }) => {
-						return <MaterialIcon name="timeline" size={size} color={color} />;
+						return <MaterialIcon name="timeline" size={36} color={color} />;
 					},
 				})}
 			>
