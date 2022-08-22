@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import express, { Express, Request, Response } from 'express';
-import { cons } from './teste/arq';
+import { cons } from './src/arq';
 
 dotenv.config();
 
