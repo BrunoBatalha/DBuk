@@ -18,8 +18,7 @@ export function NavigatorTab() {
 					headerShown: false,
 					tabBarActiveTintColor: styles.tabBarActive,
 					tabBarStyle: {
-						//backgroundColor: styles.tabBarStyle.backgroundColor,
-						backgroundColor: 'red',
+						backgroundColor: styles.tabBarStyle.backgroundColor,
 						borderTopWidth: styles.tabBarStyle.borderTopWidth
 					},
 					tabBarIcon: ({ focused, color, size }) => {
