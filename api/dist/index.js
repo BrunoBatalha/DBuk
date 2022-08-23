@@ -3,9 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const arq_1 = require("./teste/arq");
+const express_1 = __importDefault(require("express"));
+const arq_1 = require("./src/arq");
+const b_1 = require("./src/b");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
@@ -14,5 +15,8 @@ app.get('/', (req, res) => {
 });
 app.listen(port, () => {
     (0, arq_1.cons)();
+    (0, b_1.b)();
+    (0, b_1.b)();
+    (0, b_1.b)();
     console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
 });
