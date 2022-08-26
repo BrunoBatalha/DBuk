@@ -1,8 +1,10 @@
 import { User } from '../../domain/entities/User';
-import { database } from '../database/database';
+import { databaseAdapter } from '../database/databaseAdapter';
 
-export class UserRepository {
-	async create(user: User): Promise<void> {
-		await database.userDatabase.create({ username: user.username, password: user.password });
-	}
+async function create(user: User): Promise<void> {
+	await databaseAdapter.userModel.create({ username: user.username, password: user.password });
 }
+
+export const userRepository = {
+	create
+};
