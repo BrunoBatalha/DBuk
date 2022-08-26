@@ -9,8 +9,9 @@ import { ICreateUserOutputBoundary } from './boundaries/ICreateUserOutputBoundar
 
 type Output = Promise<IBaseOutputBoundary<ICreateUserOutputBoundary>>;
 
-const errorMessages: IErrorMessage[] = [];
 const useCase = (): IUseCase<ICreateUserInputBoundary, ICreateUserOutputBoundary> => {
+	const errorMessages: IErrorMessage[] = [];
+
 	return {
 		async validate(input): Promise<IErrorMessage[]> {
 			if (!input.password) {
