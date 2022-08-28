@@ -1,12 +1,26 @@
-import { Column, Model, Table } from 'sequelize-typescript';
+import { DataTypes, Model, ModelStatic, Sequelize } from 'sequelize';
 
-@Table({
-	tableName: 'users'
-})
-export class UserModel extends Model {
-	@Column
-	username!: string;
-
-	@Column
-	password!: string;
-}
+export const UserModel = (sequelize: Sequelize): ModelStatic<Model<any, any>> => {
+	return sequelize.define('users', {
+		id: {
+			primaryKey: true,
+			type: DataTypes.NUMBER,
+			autoIncrement: true
+		},
+		username: {
+			type: DataTypes.STRING,
+			unique: true,
+			allowNull: false,
+			validate: {
+				notEmpty: true
+			}
+		},
+		password: {
+			type: DataTypes.STRING,
+			allowNull: false,
+			validate: {
+				notEmpty: true
+			}
+		}
+	});
+};
