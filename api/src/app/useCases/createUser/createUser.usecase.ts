@@ -1,30 +1,14 @@
-import { IErrorMessage } from '../../../domain/errors/IErrorMessage';
 import { userRepository } from '../../../infra/repositories/userRepository';
-import { statusCodes } from '../../../infra/statusCodes';
-import { baseUseCase } from '../base.usecase';
+import { createUserValidator } from '../../validators/createUserValidator/createUser.validator';
 import { IBaseOutputBoundary } from '../IBaseOutputBoundary';
 import { IUseCase } from '../IUseCase';
+import { useCaseCommand } from '../usecaseCommand';
 import { ICreateUserInputBoundary } from './boundaries/ICreateUserInputBoundary';
 import { ICreateUserOutputBoundary } from './boundaries/ICreateUserOutputBoundary';
 
-type Output = Promise<IBaseOutputBoundary<ICreateUserOutputBoundary>>;
-
 const useCase = (): IUseCase<ICreateUserInputBoundary, ICreateUserOutputBoundary> => {
-	const errorMessages: IErrorMessage[] = [];
-
 	return {
-		async validate(input): Promise<IErrorMessage[]> {
-			if (!input.password) {
-				errorMessages.push({
-					code: 'err-usr-0001',
-					message: 'password required'
-				});
-			}
-
-			return errorMessages;
-		},
-
-		async execute(input): Output {
+		async execute(input): Promise<ICreateUserOutputBoundary> {
 			await userRepository.create({
 				username: input.username,
 				password: input.password,
@@ -32,18 +16,14 @@ const useCase = (): IUseCase<ICreateUserInputBoundary, ICreateUserOutputBoundary
 			});
 
 			return new Promise((resolve) => {
-				resolve({
-					statusCode: statusCodes.CREATED,
-					errorMessages: errorMessages,
-					value: { username: input.username }
-				});
+				resolve({ username: input.username });
 			});
 		}
 	};
 };
 
 export const createUserUseCase = {
-	execute: (input: ICreateUserInputBoundary): Output => {
-		return baseUseCase(useCase(), input);
+	execute: (input: ICreateUserInputBoundary): Promise<IBaseOutputBoundary<ICreateUserOutputBoundary>> => {
+		return useCaseCommand(useCase(), createUserValidator(), input);
 	}
 };

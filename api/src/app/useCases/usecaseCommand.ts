@@ -1,12 +1,14 @@
 import { statusCodes } from '../../infra/statusCodes';
+import { IValidator } from '../validators/IBaseValidator';
 import { IBaseOutputBoundary } from './IBaseOutputBoundary';
 import { IUseCase } from './IUseCase';
 
-export const baseUseCase = async <TInput, TOutput>(
+export const useCaseCommand = async <TInput, TOutput>(
 	usecase: IUseCase<TInput, TOutput>,
+	validator: IValidator<TInput>,
 	input: TInput
 ): Promise<IBaseOutputBoundary<TOutput>> => {
-	const errorMessages = await usecase.validate(input);
+	const errorMessages = await validator.validate(input);
 
 	if (errorMessages.length) {
 		return new Promise((resolve) => {
@@ -17,5 +19,13 @@ export const baseUseCase = async <TInput, TOutput>(
 		});
 	}
 
-	return await usecase.execute(input);
+	const output = await usecase.execute(input);
+
+	return new Promise((resolve) => {
+		resolve({
+			statusCode: statusCodes.CREATED,
+			errorMessages: errorMessages,
+			value: output
+		});
+	});
 };
