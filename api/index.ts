@@ -1,4 +1,4 @@
 import dotenv from 'dotenv';
-import { routes } from './src/controllers/routes/routes';
+import { routes } from './src/infra/routes/routes';
 dotenv.config();
 routes.startServer();
