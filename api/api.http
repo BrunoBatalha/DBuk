@@ -10,6 +10,6 @@ POST {{host}}/users
 Content-Type: application/json
 
 {
-	"username":"Bruno",
-	"password":""
+	"username":null,
+	"password":"pwd"
 }

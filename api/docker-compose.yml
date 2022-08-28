@@ -1,0 +1,15 @@
+version: '1.0'
+
+volumes:
+  dbuk_database:
+
+services:
+  mysql:
+    image: 'mysql:5.7'
+    volumes:
+      - dbuk_database:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=dbuk_db
+    ports:
+      - "3306:3306"
