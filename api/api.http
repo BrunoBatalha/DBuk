@@ -2,7 +2,15 @@
 
 ###
 # Posts
-GET {{host}}/posts
+POST {{host}}/posts
+Content-Type: application/json
+
+{
+	"userId": 1,
+	"categoriesIds": [
+		1
+	]
+}
 
 ###
 # Users
@@ -10,6 +18,6 @@ POST {{host}}/users
 Content-Type: application/json
 
 {
-	"username": "username1",
-	"password": "pwd1"
+	"username": "username14",
+	"password": "pwd14"
 }

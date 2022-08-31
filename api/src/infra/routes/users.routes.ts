@@ -1,10 +1,10 @@
+import { UserControllerFactory } from '@/main/compositionRoot/UserControllerFactory';
 import { Router } from 'express';
-import { userController } from '../../controllers/user.controller';
 
 export const configureUserRoutes = (router: Router): void => {
 	router.post('/users', async (req, res) => {
-		const { statusCode, output } = await userController.create(req.body);
-		res.status(statusCode);
+		const { statusCode, output } = await UserControllerFactory.create().execute(req.body);
+		res.status(statusCode as number);
 		res.json(output);
 	});
 };

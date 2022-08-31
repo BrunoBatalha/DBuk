@@ -1,7 +1,7 @@
-import { IErrorMessage } from '../../domain/errors/IErrorMessage';
+import { ErrorMessage } from '../../domain/errors/ErrorMessage';
 
-export interface IBaseOutputBoundary<TOutput> {
-	statusCode: number;
-	errorMessages: IErrorMessage[];
+export type IBaseOutputBoundary<TOutput> = {
+	statusCode?: number;
+	errorMessages: ErrorMessage[];
 	value?: TOutput;
-}
+};
