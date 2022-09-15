@@ -15,18 +15,18 @@ export class UseCaseManager<TInput, TOutput> {
 	}
 
 	async execute(): Promise<IBaseOutputBoundary<TOutput>> {
-		const errorMessages = await this.validator.validate(this.input);
-		if (errorMessages.length) {
+		const errorMessagesManager = await this.validator.validate(this.input);
+		if (errorMessagesManager.hasError()) {
 			return {
-				errorMessages: errorMessages,
-				statusCode: statusCodes.BAD_REQUEST
+				errorMessages: errorMessagesManager.getList(),
+				statusCode: errorMessagesManager.statusCode || statusCodes.BAD_REQUEST
 			};
 		}
 
 		const output = await this.usecase.execute(this.input);
 
 		return {
-			errorMessages: errorMessages,
+			errorMessages: errorMessagesManager.getList(),
 			value: output
 		};
 	}

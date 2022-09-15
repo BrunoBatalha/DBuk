@@ -40,7 +40,7 @@ export class PublishPostUseCase implements IPublishPostUseCase {
 
 			return {
 				id: entityCreated.id as number,
-				categories: entityCreated.categories
+				categories: this.outputDataValidator.categories
 			} as PublishPostOutputBoundary;
 		} catch (error: any) {
 			await this.managerTransactions.undoTransactions();

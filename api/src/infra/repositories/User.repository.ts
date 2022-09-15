@@ -38,4 +38,9 @@ export class UserRepository implements IUserRepository {
 		const data = await this.databaseAdapter.userModel.findOne({ username: username });
 		return data ? User.create(data as UserParams) : null;
 	}
+
+	async getByUsernamePassword(username: string, password: string): Promise<User | null> {
+		const data = await this.databaseAdapter.userModel.findOne({ username: username, password: password });
+		return data ? User.create(data as UserParams) : null;
+	}
 }

@@ -29,7 +29,9 @@ export class PostController {
 		try {
 			const usecase = new UseCaseManagerLoadManyData(this.publishPostUseCase, this.publishPostValidator, input);
 			const response = await usecase.execute();
-			response.statusCode = statusCodes.CREATED;
+			if (!response.statusCode) {
+				response.statusCode = statusCodes.CREATED;
+			}
 
 			return this.getResponse<PublishPostOutputBoundary>(response);
 		} catch (error: any) {

@@ -1,30 +1,31 @@
 import { ICreateUserValidator } from '@/adapters/interfaces/useCases/user/createUser/ICreateUser.validator';
 import { IUserRepository } from '@/app/interfaces/repositories/IUser.repository';
-import { ErrorMessage } from '@/domain/errors/ErrorMessage';
+import { ErrorMessageManager } from '@/domain/errors/ErrorMessageManager';
 import { userErrorMessages } from '@/domain/errors/userErrorMessages';
 import { CreateUserInputBoundary } from './boundaries/CreateUserInputBoundary';
 
 export class CreateUserValidator implements ICreateUserValidator {
-	private errorMessages: ErrorMessage[] = [];
+	private errorMessageManager: ErrorMessageManager;
 	private userRepository: IUserRepository;
 
 	constructor(userRepository: IUserRepository) {
 		this.userRepository = userRepository;
+		this.errorMessageManager = new ErrorMessageManager();
 	}
 
-	async validate(input: CreateUserInputBoundary): Promise<ErrorMessage[]> {
+	async validate(input: CreateUserInputBoundary): Promise<ErrorMessageManager> {
 		if (!input.password) {
-			this.errorMessages.push(userErrorMessages.passwordEmpty);
+			this.errorMessageManager.add(userErrorMessages.passwordEmpty);
 		}
 		if (!input.username) {
-			this.errorMessages.push(userErrorMessages.usernameEmpty);
+			this.errorMessageManager.add(userErrorMessages.usernameEmpty);
 		}
 
-		const userFound = await this.userRepository.getByUsername(input.username);
-		if (userFound) {
-			this.errorMessages.push(userErrorMessages.usernameIsAlreadyInUse);
+		const isUsernameExist = await this.userRepository.getByUsername(input.username);
+		if (isUsernameExist) {
+			this.errorMessageManager.add(userErrorMessages.usernameIsAlreadyInUse);
 		}
 
-		return this.errorMessages;
+		return this.errorMessageManager;
 	}
 }

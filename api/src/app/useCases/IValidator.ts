@@ -1,5 +1,5 @@
-import { ErrorMessage } from '../../domain/errors/ErrorMessage';
+import { ErrorMessageManager } from '../../domain/errors/ErrorMessageManager';
 
 export interface IValidator<TInput> {
-	validate(input: TInput): Promise<ErrorMessage[]>;
+	validate(input: TInput): Promise<ErrorMessageManager>;
 }

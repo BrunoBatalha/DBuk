@@ -25,11 +25,11 @@ export class UseCaseManagerLoadManyData<TInput, TOutput, TOutputDataValidator> {
 	}
 
 	async execute(): Promise<IBaseOutputBoundary<TOutput>> {
-		const errorMessages = await this.validator.validate(this.input);
-		if (errorMessages.length) {
+		const errorMessageManager = await this.validator.validate(this.input);
+		if (errorMessageManager.hasError()) {
 			return {
-				errorMessages: errorMessages,
-				statusCode: statusCodes.BAD_REQUEST
+				errorMessages: errorMessageManager.getList(),
+				statusCode: errorMessageManager.statusCode || statusCodes.BAD_REQUEST
 			};
 		}
 
@@ -38,7 +38,7 @@ export class UseCaseManagerLoadManyData<TInput, TOutput, TOutputDataValidator> {
 		const output = await this.usecase.execute(this.input);
 
 		return {
-			errorMessages: errorMessages,
+			errorMessages: errorMessageManager.getList(),
 			value: output
 		};
 	}

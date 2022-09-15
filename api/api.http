@@ -6,9 +6,10 @@ POST {{host}}/posts
 Content-Type: application/json
 
 {
-	"userId": 1,
+	"username": "bruno",
+	"password": "brunao",
 	"categoriesIds": [
-		1
+		1,4
 	]
 }
 
@@ -18,6 +19,6 @@ POST {{host}}/users
 Content-Type: application/json
 
 {
-	"username": "username14",
-	"password": "pwd14"
+	"username": "bruno",
+	"password": "brunao"
 }

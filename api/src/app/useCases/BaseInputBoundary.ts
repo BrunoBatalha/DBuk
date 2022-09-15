@@ -1,3 +1,4 @@
 export type BaseInputBoundary = {
-	userId: number;
+	username: string;
+	password: string;
 };

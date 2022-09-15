@@ -32,10 +32,12 @@ export class UserController {
 			response.statusCode = statusCodes.CREATED;
 
 			return this.getResponse<CreateUserOutputBoundary>(response);
-		} catch (error) {
+		} catch (error: any) {
+			console.error(error);
+			const errorDescription = `${error.message} - ${error.stack} - ${error}`;
 			return this.getResponse<unknown>({
 				statusCode: statusCodes.INTERNAL_SERVER_ERROR,
-				value: error,
+				value: errorDescription,
 				errorMessages: []
 			});
 		}

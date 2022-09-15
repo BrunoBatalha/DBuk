@@ -1,15 +1,17 @@
 import { IPublishPostUseCase } from '@/adapters/interfaces/useCases/post/publishPost/IPublishPost.usecase';
 import { IPublishPostValidator } from '@/adapters/interfaces/useCases/post/publishPost/IPublishPost.validator';
+import { IAuthenticationValidator } from '@/adapters/interfaces/useCases/user/authentication/IAuthentication.validator';
 import { ICategoryRepository } from '@/app/interfaces/repositories/ICategory.repository';
-import { IUserRepository } from '@/app/interfaces/repositories/IUser.repository';
+import { Category } from '@/domain/entities/Category';
 import { User } from '@/domain/entities/User';
 import { categoryErrorMessages } from '@/domain/errors/categoryErrorMessages';
-import { ErrorMessage, ErrorMessageManager } from '@/domain/errors/ErrorMessage';
-import { userErrorMessages } from '@/domain/errors/userErrorMessages';
+import { ErrorMessageManager } from '@/domain/errors/ErrorMessageManager';
+import { statusCodes } from '@/infra/statusCodes';
 import { PublishPostInputBoundary } from './boundaries/PublishPostInputBoundary';
 
 export type PublishPostValidatorOutput = {
 	user: User;
+	categories: Category[];
 };
 
 export class PublishPostValidator implements IPublishPostValidator {
@@ -18,7 +20,10 @@ export class PublishPostValidator implements IPublishPostValidator {
 	private outputPartial: Partial<PublishPostValidatorOutput> = {};
 	private input!: PublishPostInputBoundary;
 
-	constructor(private userRepository: IUserRepository, private categoryRepository: ICategoryRepository) {
+	constructor(
+		private validatorAuthentication: IAuthenticationValidator,
+		private categoryRepository: ICategoryRepository
+	) {
 		this.errorMessageManager = new ErrorMessageManager();
 	}
 
@@ -26,15 +31,15 @@ export class PublishPostValidator implements IPublishPostValidator {
 		useCaseVisitor.setOutputDataValidator(this.output);
 	}
 
-	async validate(input: PublishPostInputBoundary): Promise<ErrorMessage[]> {
+	async validate(input: PublishPostInputBoundary): Promise<ErrorMessageManager> {
 		this.input = input;
 
 		await this.loadData();
 		if (this.errorMessageManager.hasError()) {
-			return this.errorMessageManager.getList();
+			return this.errorMessageManager;
 		}
 
-		return this.errorMessageManager.getList();
+		return this.errorMessageManager;
 	}
 
 	private async loadData(): Promise<void> {
@@ -48,13 +53,13 @@ export class PublishPostValidator implements IPublishPostValidator {
 	}
 
 	private async validateUser(): Promise<void> {
-		const userFound = await this.userRepository.getById(this.input.userId);
+		const userFound = await this.validatorAuthentication.validateCrendetials(this.input.username, this.input.password);
 		if (!userFound) {
-			this.errorMessageManager.add(userErrorMessages.userNotFound);
+			this.errorMessageManager.statusCode = statusCodes.FORBIDDEN;
 			return;
 		}
 
-		this.outputPartial.user = userFound as User;
+		this.outputPartial.user = userFound as unknown as User;
 	}
 
 	private async validateCategory(): Promise<void> {
@@ -66,6 +71,9 @@ export class PublishPostValidator implements IPublishPostValidator {
 			this.errorMessageManager.addWithPlaceholder(categoryErrorMessages.categoryNotFound, {
 				id: idNotFound[0]
 			});
+			return;
 		}
+
+		this.outputPartial.categories = categoriesFound;
 	}
 }

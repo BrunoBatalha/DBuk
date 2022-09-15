@@ -1,4 +1,4 @@
-import { ErrorMessage } from '../../domain/errors/ErrorMessage';
+import { ErrorMessage } from '../../domain/errors/ErrorMessageManager';
 
 export type IBaseOutputBoundary<TOutput> = {
 	statusCode?: number;
