@@ -9,6 +9,8 @@ export type PostParams = {
 export class Post {
 	id?: number;
 	user: User;
+	createdAt: Date;
+	// image: Blob;
 	private _categories: Category[] = [];
 
 	public get categories(): Category[] {
@@ -18,6 +20,7 @@ export class Post {
 	constructor(params: PostParams) {
 		this.id = params.id;
 		this.user = params.user;
+		this.createdAt = new Date();
 	}
 
 	static create(params: PostParams): Post {

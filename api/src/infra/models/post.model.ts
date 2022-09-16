@@ -22,12 +22,13 @@ export const PostModel: SequelizeTableCreation = {
 	associations(models) {
 		models.PostModel.belongsTo(models.UserModel, {
 			foreignKey: 'userId',
-			as: 'UserModel'
+			as: 'user'
 		});
+
 		models.PostModel.belongsToMany(models.CategoryModel, {
 			through: models.PostCategoryModel,
 			foreignKey: 'categoryId',
-			as: 'CategoryModel'
+			as: 'categories'
 		});
 	}
 };

@@ -1,5 +1,6 @@
 import { Model, Transaction } from 'sequelize';
 import { IModelAdapter } from '../interfaces/IModelAdapter';
+import { ModelAlias } from '../interfaces/ModelAlias';
 import { ModelName } from '../interfaces/ModelName';
 import { SequelizeSingleton } from './SequelizeSingleton';
 
@@ -25,26 +26,24 @@ export class ModelAdapter implements IModelAdapter {
 		).get();
 	}
 
-	async findOne(where: { [k: string]: string | number }, includes?: ModelName[] | undefined): Promise<object | null> {
+	async findOne(where: { [k: string]: string | number }, includes?: ModelAlias[] | undefined): Promise<object | null> {
 		const data = await this.listEntities(where, includes);
 
 		return data.length > 0 ? data[0].get({ plain: true }) : null;
 	}
 
-	async list(where: { [k: string]: string | number }, includes?: ModelName[] | undefined): Promise<object[]> {
+	async list(where: { [k: string]: string | number }, includes?: ModelAlias[] | undefined): Promise<object[]> {
 		const data = await this.listEntities(where, includes);
 		return data.map((d) => d.get({ plain: true }));
 	}
 
 	private async listEntities(
 		where: { [k: string]: string | number },
-		includes?: ModelName[] | undefined
+		includes?: ModelAlias[] | undefined
 	): Promise<Array<Model<any, any>>> {
-		const includesSequelize = includes ? includes.map((i) => SequelizeSingleton.getInstance().models[i]) : [];
-
 		return await SequelizeSingleton.getInstance().models[this.modelClass].findAll({
 			where: { ...where },
-			include: includesSequelize
+			include: includes
 		});
 	}
 }

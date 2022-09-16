@@ -1,7 +1,7 @@
 @host = http://localhost:5000
 
 ###
-# Posts
+# Publish post
 POST {{host}}/posts
 Content-Type: application/json
 
@@ -14,7 +14,15 @@ Content-Type: application/json
 }
 
 ###
-# Users
+# Show timeline
+GET {{host}}/posts?username=bruno&password=brunao
+Content-Type: application/json
+
+{
+}
+
+###
+# List users
 POST {{host}}/users 
 Content-Type: application/json
 

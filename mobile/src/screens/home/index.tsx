@@ -1,62 +1,43 @@
-import React from 'react';
-import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
-import { useThemeStyle } from '../../infra/themeContextProvider';
+import React, { useEffect, useState } from 'react';
+import { FlatList } from "react-native";
+import { PostHttp } from '../../app/post/post-http';
+import { PostDomain } from '../../app/post/PostDomain';
 import { Container } from '../../shared/components/container';
-import { MaterialIcon } from '../../shared/importIcons';
-import { getStylesComponent } from './styles';
+import { Post } from '../../shared/components/post';
 
+type Props = {
+	postHttp: PostHttp
+}
 
-export function Home() {
-	const styles = useThemeStyle(getStylesComponent);
+export function Home({ postHttp }: Props) {
+	const [posts, setPosts] = useState<PostDomain[]>([])
+
+	useEffect(() => {
+		loadPosts()
+	}, [])
+
+	async function loadPosts() {
+		const postsResponse = await postHttp.list()
+		setPosts(postsResponse.list);
+	}
 
 	return (
 		<Container>
 			<FlatList
 				style={{ paddingTop: 24 }}
 				showsVerticalScrollIndicator={false}
-				data={[1, 2, 3, 4, 5]}
+				data={posts}
 				// refreshControl
-				renderItem={() => (
-					<View style={styles.post}>
-						<View style={styles.header}>
-							<Image style={styles.avatar} source={{ uri: 'https://i.vimeocdn.com/portrait/58832_300x300.jpg' }} />
-
-							<View style={styles.headerInformations}>
-								<View style={styles.headerInformationsUser}>
-									<Text style={styles.headerUsername}>Jordan Praise</Text>
-									<Text style={styles.headerAction}>publicou</Text>
-								</View>
-								<Text style={styles.headerDatePost}>3 minutos atrás</Text>
-							</View>
-						</View>
-
-						<Image style={styles.imagePost} source={{ uri: 'https://i.vimeocdn.com/portrait/58832_300x300.jpg' }} />
-
-						<View style={styles.footerPost}>
-							<View style={styles.footerReactions}>
-								<MaterialIcon name='thumb-up' style={styles.footerIconThumb} />
-								<MaterialIcon name='favorite' style={styles.footerIconFavorite} />
-								<Text style={styles.footerReactionsNumber}>400</Text>
-							</View>
-
-							<TouchableOpacity>
-								<Text style={styles.footerCommentsInfo}>122 Comments</Text>
-							</TouchableOpacity>
-						</View>
-
-						<View style={styles.actionsPost}>
-							<TouchableOpacity style={styles.actionsButton} activeOpacity={.7}>
-								<MaterialIcon name='thumb-up-off-alt' style={styles.actionsIcon} />
-								<Text style={styles.actionsText}>Like</Text>
-							</TouchableOpacity>
-
-							<TouchableOpacity style={styles.actionsButton} activeOpacity={.7}>
-								<MaterialIcon name='chat-bubble-outline' style={styles.actionsIcon} />
-								<Text style={styles.actionsText}>Comment</Text>
-							</TouchableOpacity>
-						</View>
-					</View>
-
+				renderItem={({ item: p }) => (
+					<Post
+						key={p.id}
+						author={p.getUsername()}
+						totalComments={100}
+						totalReactions={400}
+						uriAvatarImage='https://i.vimeocdn.com/portrait/58832_300x300.jpg'
+						uriPostImage='https://i.vimeocdn.com/portrait/58832_300x300.jpg'
+						datePost={p.getPublishedDateToDisplay()}
+					></Post>
 				)}
 			></FlatList>
 		</Container>

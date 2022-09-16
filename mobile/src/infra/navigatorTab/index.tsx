@@ -2,6 +2,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import { PostHttp } from '../../app/post/post-http';
+import { HttpClient } from '../../core/http/http-client';
 import { Home } from '../../screens/home';
 import { useThemeStyle } from '../themeContextProvider';
 import { getStylesComponent } from './styles';
@@ -26,8 +28,12 @@ export function NavigatorTab() {
 					},
 				})}
 			>
-				<Tab.Screen name="Home" component={Home} />
+				<Tab.Screen name="Home" component={HomeFactory} />
 			</Tab.Navigator>
 		</NavigationContainer>
 	);
+}
+
+function HomeFactory() {
+	return <Home postHttp={new PostHttp(new HttpClient())} />
 }

@@ -1,13 +1,14 @@
+import cors from 'cors';
 import express from 'express';
 import { configurePostRoutes } from './posts.routes';
 import { configureUserRoutes } from './users.routes';
-
 const app = express();
 const router = express.Router();
 
 configurePostRoutes(router);
 configureUserRoutes(router);
 
+app.use(cors());
 app.use(express.json());
 app.use(router);
 
