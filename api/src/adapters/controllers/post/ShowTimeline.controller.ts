@@ -2,7 +2,7 @@ import { IShowTimelineUseCase } from '@/adapters/interfaces/useCases/post/showTi
 import { IShowTimelineValidator } from '@/adapters/interfaces/useCases/post/showTimeline/IShowTimeline.validator';
 import { IBaseOutputBoundary } from '@/app/useCases/IBaseOutputBoundary';
 import { ShowTimelineInputDto } from '@/app/useCases/post/showTimeline/dtos/ShowTimelineInput.dto';
-import { ShowtimelineOutputDto } from '@/app/useCases/post/showTimeline/dtos/ShowTimelineOutput.dto';
+import { ShowtimelineOutputDto as ShowTimelineOutputDto } from '@/app/useCases/post/showTimeline/dtos/ShowTimelineOutput.dto';
 import { UseCaseManager } from '@/app/useCases/UseCaseManager';
 import { statusCodes } from '@/infra/statusCodes';
 
@@ -33,7 +33,7 @@ export class ShowTimelineController {
 				response.statusCode = statusCodes.CREATED;
 			}
 
-			return this.getResponse<ShowtimelineOutputDto>(response);
+			return this.getResponse<ShowTimelineOutputDto>(response);
 		} catch (error: any) {
 			return this.getResponse<unknown>({
 				statusCode: statusCodes.INTERNAL_SERVER_ERROR,

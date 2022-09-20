@@ -14,6 +14,8 @@ export type PublishPostValidatorOutput = {
 	categories: Category[];
 };
 
+// TODO: validar tipo de arquivo
+
 export class PublishPostValidator implements IPublishPostValidator {
 	private errorMessageManager: ErrorMessageManager;
 	private output!: PublishPostValidatorOutput;

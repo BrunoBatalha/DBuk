@@ -12,9 +12,9 @@ export const PostModel: SequelizeTableCreation = {
 			userId: {
 				type: DataTypes.NUMBER
 			},
-			image: {
-				type: DataTypes.BLOB,
-				allowNull: true // todo: change to false
+			imageUri: {
+				type: DataTypes.STRING,
+				allowNull: false
 			}
 		});
 	},

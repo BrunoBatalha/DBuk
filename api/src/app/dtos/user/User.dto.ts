@@ -1,10 +1,10 @@
 type UserDtoParams = {
-	id: string;
+	id: number;
 	username: string;
 };
 
 export class UserDto {
-	readonly id: string;
+	readonly id: number;
 	readonly username: string;
 
 	constructor(params: UserDtoParams) {

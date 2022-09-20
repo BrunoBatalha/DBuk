@@ -10,7 +10,7 @@ create table if not exists dbuk_db.users (
 create table if not exists dbuk_db.posts (
 	id int not null auto_increment,
 	userId int not null,
-	image blob null, -- deve ser not null
+	imageUri varchar(100) not null,
 	createdAt datetime not null,
 	updatedAt datetime not null,
 	primary key(id),
