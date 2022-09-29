@@ -1,10 +1,12 @@
 import { PublishPostUseCase } from 'data/usecases/publish-post/PublishPostUseCase';
 import { HttpClientAdapter } from 'infra/adapters/HttpClientAdapter';
-import { PublishPost } from 'presentation/pages/publish-post/publish-post';
+import { PublishPostViewModel } from 'presentation/view-models/publish-post/publish-post-view-model';
+import { PublishPost } from 'presentation/views/publish-post/publish-post';
 
-export function PublishPostFactory(): JSX.Element {
+export default function PublishPostFactory(): JSX.Element {
 	const httpClientAdapter = new HttpClientAdapter();
 	const usecase = new PublishPostUseCase(httpClientAdapter);
+	const viewModel = PublishPostViewModel({ publishPostUseCase: usecase });
 
-	return <PublishPost useCase={usecase} />;
+	return <PublishPost viewModel={viewModel} />;
 }

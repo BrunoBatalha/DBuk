@@ -4,4 +4,5 @@ export type PostModelType = {
 	id: number;
 	imageUri: string;
 	user: UserModelType;
+	createdAt: Date;
 };

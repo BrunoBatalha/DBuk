@@ -13,7 +13,7 @@ export class PostRepository extends AbstractRepository<PostRepository> implement
 	async create(post: Post): Promise<Post> {
 		this.checkTransaction();
 		const entity = await this.databaseAdapter.postModel.create(
-			{ userId: post.userId, imageUri: post.imageUri },
+			{ userId: post.userId, imageUri: post.imageUri, createdAt: post.createdAt.toISOString() },
 			this.transaction
 		);
 
@@ -24,6 +24,8 @@ export class PostRepository extends AbstractRepository<PostRepository> implement
 		const list = (await this.databaseAdapter.postModel.list({}, this.includes)) as PostModelType[];
 		return list.map((e) => {
 			return Post.create({
+				id: e.id,
+				createdAt: e.createdAt,
 				imageUri: e.imageUri,
 				user: User.create({ username: e.user.username, id: e.user.id, password: '', posts: [] })
 			});

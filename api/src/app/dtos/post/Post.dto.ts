@@ -24,7 +24,7 @@ export class PostDto {
 	static convertDomainToDto(post: Post): PostDto {
 		return new PostDto({
 			id: post.id?.toString() || '',
-			createdAt: post.createdAt,
+			createdAt: post.createdAt as Date,
 			image: post.imageUri,
 			user: new UserDto({
 				id: post.userId,

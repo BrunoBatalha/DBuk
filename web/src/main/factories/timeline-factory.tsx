@@ -1,10 +1,12 @@
 import { ShowTimelineUseCase } from 'data/usecases/show-timeline/ShowTimelineUseCase';
 import { HttpClientAdapter } from 'infra/adapters/HttpClientAdapter';
-import { Timeline } from 'presentation/pages/timeline/timeline';
+import { TimelineViewModel } from 'presentation/view-models/timeline/timeline-view-model';
+import { Timeline } from 'presentation/views/timeline/timeline';
 
-export function TimelineFactory(): JSX.Element {
+export default function TimelineFactory(): JSX.Element {
 	const httpClientAdapter = new HttpClientAdapter();
 	const showTimelineUseCase = new ShowTimelineUseCase(httpClientAdapter);
+	const viewModel = TimelineViewModel({ showTimelineUseCase });
 
-	return <Timeline useCase={showTimelineUseCase} />;
+	return <Timeline viewModel={viewModel} />;
 }

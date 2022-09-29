@@ -1,6 +1,14 @@
+import { Paper } from '@mui/material';
 import React from 'react';
-import './style.scss';
+import { ContainerSx } from './styles';
 
-export function Container({ children }: { children: React.ReactNode }): JSX.Element {
-	return <div className="container">{children}</div>;
+export function Container({ children }: { children: React.ReactElement }): JSX.Element {
+	return (
+		<Paper
+			variant="outlined"
+			sx={ContainerSx}
+		>
+			{children}
+		</Paper>
+	);
 }

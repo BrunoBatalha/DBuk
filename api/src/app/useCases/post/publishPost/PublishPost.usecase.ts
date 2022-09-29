@@ -34,7 +34,11 @@ export class PublishPostUseCase implements IPublishPostUseCase {
 			await this.managerTransactions.addTransactionTo(this.postCategoryRepository);
 
 			const uriImage = await ImageService.uploadImageToCloud2(input.image);
-			const postToCreate = Post.create({ user: this.outputDataValidator.user, imageUri: uriImage });
+			const postToCreate = Post.create({
+				user: this.outputDataValidator.user,
+				imageUri: uriImage,
+				createdAt: new Date()
+			});
 
 			const entityCreated = await this.postRepository.create(postToCreate);
 			await this.postCategoryRepository.create(entityCreated.id as number, input.categoriesIds);

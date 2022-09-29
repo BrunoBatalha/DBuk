@@ -18,11 +18,11 @@ export class PostDomain {
 	private constructor(params: PostDomainParams) {
 		this.id = params.id;
 		this.user = params.user;
-		this.createdAt = params.createdAt;
+		this.createdAt = new Date(params.createdAt);
 		this.image = params.image;
 	}
 
-	getUsername(): string | undefined {
+	getUsername(): string {
 		return this.user.username;
 	}
 
@@ -30,17 +30,21 @@ export class PostDomain {
 		const { diffHours, diffMinutes } = this.diffHoursBetweenNowAndPublishedPost();
 		const hoursTotal = 24;
 		if (diffHours < 1) {
-			return `${diffMinutes} minutos atrás`;
+			return `${diffMinutes} minuto${diffHours === 1 ? '' : 's'} atrás`;
 		}
 
 		if (diffHours <= hoursTotal) {
-			return `${diffHours} horas atrás`;
+			return `${diffHours} hora${diffHours === 1 ? '' : 's'} atrás`;
 		}
 
-		const datePublished = new Date(this.createdAt);
-		const month = datePublished.getMonth() + 1;
+		return this.formatDate();
+		// Lógica veio do React Native mas na web existe o Intl
+		// const datePublished = new Date(this.createdAt);
+		// const month = datePublished.getMonth() + 1;
 
-		return `${datePublished.getDate()}/${month.toString().padStart(2, '0')}/${datePublished.getFullYear()}`;
+		// return `${datePublished.getDate().toString().padStart(2, '0')}/
+		// 				${month.toString().padStart(2, '0')}/
+		// 				${datePublished.getFullYear()}`;
 	}
 
 	private diffHoursBetweenNowAndPublishedPost(): { diffHours: number; diffMinutes: number } {
@@ -51,6 +55,18 @@ export class PostDomain {
 		const hours = Math.floor(minutes / 60);
 
 		return { diffHours: hours, diffMinutes: minutes };
+	}
+
+	private formatDate(): string {
+		return new Intl.DateTimeFormat('pt-BR', {
+			year: 'numeric',
+			month: 'numeric',
+			day: 'numeric',
+			hour: 'numeric',
+			minute: 'numeric',
+			second: 'numeric',
+			hour12: false
+		}).format(this.createdAt);
 	}
 
 	static create(params: PostDomainParams): PostDomain {

@@ -1,10 +1,12 @@
 import { RegisterUseCase } from 'data/usecases/register/RegisterUseCase';
 import { HttpClientAdapter } from 'infra/adapters/HttpClientAdapter';
-import { Register } from 'presentation/pages/register/register';
+import { RegisterViewModel } from 'presentation/view-models/register/register-view-model';
+import { Register } from 'presentation/views/register/register';
 
-export function RegisterFactory(): JSX.Element {
+export default function RegisterFactory(): JSX.Element {
 	const httpClientAdapter = new HttpClientAdapter();
 	const usecase = new RegisterUseCase(httpClientAdapter);
+	const viewModel = RegisterViewModel({ registerUseCase: usecase });
 
-	return <Register useCase={usecase} />;
+	return <Register viewModel={viewModel} />;
 }

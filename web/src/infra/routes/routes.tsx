@@ -1,28 +1,35 @@
 import { AuthService } from 'infra/services/AuthService';
-import { PublishPostFactory } from 'main/factories/publish-post-factory';
-import { RegisterFactory } from 'main/factories/register-factory';
-import { TimelineFactory } from 'main/factories/timeline-factory';
+import React from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BottomNavigationMain } from 'shared/components/bottom-navigation-main/bottom-navigation-main';
+import { Container } from 'shared/components/container/container';
 
-function PrivateRoute({ element }: { element: JSX.Element }): JSX.Element {
-	const hasCredentials = AuthService.getPassword() && AuthService.getUsername();
-	console.log(hasCredentials);
-	return hasCredentials ? element : <Navigate to="/register" />;
-}
-
-// function PrivateOutlet() {
-// 	const hasCredentials = AuthService.getPassword() && AuthService.getUsername();
-// 	return hasCredentials ? <Outlet /> : <Navigate to="/register" />;
-// }
+const TimelineLazy = React.lazy((): any => import('main/factories/timeline-factory'));
+const PublishPostLazy = React.lazy((): any => import('main/factories/publish-post-factory'));
+const RegisterLazy = React.lazy((): any => import('main/factories/register-factory'));
 
 export function RoutesRoot(): JSX.Element {
 	return (
-		<BrowserRouter>
-			<Routes>
-				<Route path="/" element={<PrivateRoute element={<TimelineFactory />} />}></Route>
-				<Route path="/publish-post" element={<PrivateRoute element={<PublishPostFactory />} />}></Route>
-				<Route path="/register" element={<RegisterFactory />}></Route>
-			</Routes>
-		</BrowserRouter>
+		<Container>
+			<BrowserRouter>
+				<Routes>
+					<Route path="/" element={<PrivateRoute element={<BottomNavigationMain />} />}>
+						<Route index element={<PrivateRoute element={<TimelineLazy />} />}></Route>
+						<Route path="/publish-post" element={<PrivateRoute element={<PublishPostLazy />} />}></Route>
+					</Route>
+
+					<Route path="/register" element={<RegisterLazy />}></Route>
+				</Routes>
+			</BrowserRouter>
+		</Container>
 	);
+}
+
+function PrivateRoute({ element }: { element: JSX.Element }): JSX.Element {
+	const hasCredentials = AuthService.getPassword() && AuthService.getUsername();
+	if (!hasCredentials) {
+		return <Navigate to="/register" />;
+	}
+
+	return <React.Suspense fallback={<>loading</>}>{element}</React.Suspense>;
 }

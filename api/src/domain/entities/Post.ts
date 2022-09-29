@@ -5,6 +5,7 @@ export type PostParams = {
 	id?: number;
 	user: User;
 	imageUri: string;
+	createdAt: Date;
 };
 
 export class Post {
@@ -17,7 +18,7 @@ export class Post {
 	constructor(params: PostParams) {
 		this.id = params.id;
 		this.user = params.user;
-		this.createdAt = new Date();
+		this.createdAt = params.createdAt;
 		this.imageUri = params.imageUri;
 	}
 
