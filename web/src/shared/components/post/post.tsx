@@ -7,20 +7,21 @@ import { styles } from './styles';
 
 type Props = {
 	post: PostDomain;
+	onReactPost(postId: number): void;
 };
 
-export function Post({ post }: Props): JSX.Element {
+export function Post({ post, onReactPost }: Props): JSX.Element {
 	return (
 		<>
 			<PostHeader publishedDate={post.getPublishedDateToDisplay()} username={post.getUsername()} />
 
-			<Box component="img" sx={styles.Image} className="timeline__image" srcSet={post.image} />
+			<Box component="img" sx={styles.Image} srcSet={post.image} />
 
 			<PostInteractions totalComments="400" totalReactions="400" />
 
 			<Divider sx={{ margin: (theme) => theme.spacing(2, 0) }} />
 
-			<PostActions />
+			<PostActions isReacted={post.isReacted()} onReactPost={() => onReactPost(post.id)} />
 		</>
 	);
 }

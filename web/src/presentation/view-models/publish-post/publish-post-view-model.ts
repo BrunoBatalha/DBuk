@@ -12,7 +12,7 @@ export function PublishPostViewModel({ publishPostUseCase }: Params): () => Publ
 			return;
 		}
 
-		await publishPostUseCase.save({
+		await publishPostUseCase.execute({
 			image: imageCropped.blob,
 			categoriesIds: [1, 4]
 		});

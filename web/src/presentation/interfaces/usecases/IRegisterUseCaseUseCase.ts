@@ -1,5 +1,5 @@
-import { RegisterParams } from 'data/usecases/register/RegisterUseCase';
+import { RegisterUseCaseParams } from 'data/usecases/register/RegisterUseCase';
 
 export interface IRegisterUseCase {
-	register(request: RegisterParams): Promise<void>;
+	execute(request: RegisterUseCaseParams): Promise<void>;
 }

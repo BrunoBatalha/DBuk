@@ -1,5 +1,5 @@
-import { SavePostRequest } from 'data/usecases/publish-post/PublishPostUseCase';
+import { PublishPostUseCaseParams } from 'data/usecases/publish-post/PublishPostUseCase';
 
 export interface IPublishPostUseCase {
-	save(request: SavePostRequest): Promise<void>;
+	execute(request: PublishPostUseCaseParams): Promise<void>;
 }

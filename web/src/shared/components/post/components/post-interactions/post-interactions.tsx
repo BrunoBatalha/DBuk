@@ -1,5 +1,5 @@
 import { Avatar, Box, Grid, Link } from '@mui/material';
-import { FavoriteIcon, ThumbUpAltIcon } from 'shared/icons';
+import { ThumbUpAltIcon } from 'shared/icons';
 import { styles } from './styles';
 
 type Props = {
@@ -14,9 +14,9 @@ export function PostInteractions({ totalComments, totalReactions }: Props): JSX.
 				<Avatar alt="Reaction liked" sx={styles.IconInGroupLike}>
 					<ThumbUpAltIcon sx={styles.IconReactionCount} />
 				</Avatar>
-				<Avatar alt="Reaction loved" sx={styles.IconInGroupLove}>
+				{/* <Avatar alt="Reaction loved" sx={styles.IconInGroupLove}>
 					<FavoriteIcon sx={styles.IconReactionCount} />
-				</Avatar>
+				</Avatar> */}
 				<Box component="span" sx={{ marginLeft: (theme) => theme.spacing(1) }}>
 					{totalReactions}
 				</Box>

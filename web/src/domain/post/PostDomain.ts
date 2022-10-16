@@ -1,25 +1,29 @@
+import { ReactionEnum } from 'domain/enums/ReactionEnum';
 import { DomainException } from 'domain/errors/DomainException';
 import { PostError } from 'domain/errors/PostErrors';
 import { UserDomain } from 'domain/user/UserDomain';
 
-interface PostDomainParams {
+type PostDomainParams = {
 	id: number;
-	user: UserDomain;
 	image: string;
+	user: UserDomain;
+	reaction?: ReactionEnum;
 	createdAt: Date;
-}
+};
 
 export class PostDomain {
 	id: number;
 	image: string;
 	user: UserDomain;
+	reaction?: ReactionEnum | null;
 	createdAt: Date;
 
 	private constructor(params: PostDomainParams) {
 		this.id = params.id;
-		this.user = params.user;
-		this.createdAt = new Date(params.createdAt);
 		this.image = params.image;
+		this.user = params.user;
+		this.reaction = params.reaction;
+		this.createdAt = new Date(params.createdAt);
 	}
 
 	getUsername(): string {
@@ -38,13 +42,10 @@ export class PostDomain {
 		}
 
 		return this.formatDate();
-		// Lógica veio do React Native mas na web existe o Intl
-		// const datePublished = new Date(this.createdAt);
-		// const month = datePublished.getMonth() + 1;
+	}
 
-		// return `${datePublished.getDate().toString().padStart(2, '0')}/
-		// 				${month.toString().padStart(2, '0')}/
-		// 				${datePublished.getFullYear()}`;
+	isReacted(): boolean {
+		return !!this.reaction;
 	}
 
 	private diffHoursBetweenNowAndPublishedPost(): { diffHours: number; diffMinutes: number } {
@@ -67,6 +68,13 @@ export class PostDomain {
 			second: 'numeric',
 			hour12: false
 		}).format(this.createdAt);
+		// Lógica veio do React Native mas na web existe o Intl
+		// const datePublished = new Date(this.createdAt);
+		// const month = datePublished.getMonth() + 1;
+
+		// return `${datePublished.getDate().toString().padStart(2, '0')}/
+		// 				${month.toString().padStart(2, '0')}/
+		// 				${datePublished.getFullYear()}`;
 	}
 
 	static create(params: PostDomainParams): PostDomain {

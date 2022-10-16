@@ -4,12 +4,12 @@ import { IRegisterUseCase } from 'presentation/interfaces/usecases/IRegisterUseC
 export class RegisterUseCase implements IRegisterUseCase {
 	constructor(private httpClient: IHttpClientAdapter) { }
 
-	async register(request: RegisterParams): Promise<void> {
+	async execute(request: RegisterUseCaseParams): Promise<void> {
 		await this.httpClient.post<void>('users', request);
 	}
 }
 
-export type RegisterParams = {
+export type RegisterUseCaseParams = {
 	username: string;
 	password: string;
 };

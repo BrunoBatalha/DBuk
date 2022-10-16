@@ -5,7 +5,7 @@ import { IPublishPostUseCase } from 'presentation/interfaces/usecases/IPublishPo
 export class PublishPostUseCase implements IPublishPostUseCase {
 	constructor(private httpClient: IHttpClientAdapter) { }
 
-	async save(request: SavePostRequest): Promise<void> {
+	async execute(request: PublishPostUseCaseParams): Promise<void> {
 		const formData = new FormData();
 		formData.append('username', AuthService.getUsername());
 		formData.append('password', AuthService.getPassword());
@@ -18,7 +18,7 @@ export class PublishPostUseCase implements IPublishPostUseCase {
 	}
 }
 
-export type SavePostRequest = {
+export type PublishPostUseCaseParams = {
 	categoriesIds: number[];
 	image: Blob;
 };

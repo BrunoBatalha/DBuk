@@ -11,7 +11,7 @@ export function RegisterViewModel({ registerUseCase }: Params): () => RegisterVi
 	const [password, setPassword] = useState('');
 
 	async function submit(): Promise<void> {
-		await registerUseCase.register({
+		await registerUseCase.execute({
 			username: username,
 			password: password
 		});
