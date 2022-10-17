@@ -7,4 +7,6 @@ export class DatabaseAdapter implements IDatabaseAdapter {
 	postModel: IModelAdapter = new ModelAdapter('PostModel');
 	categoryModel: IModelAdapter = new ModelAdapter('CategoryModel');
 	postCategoryModel: IModelAdapter = new ModelAdapter('PostCategoryModel');
+	reactionModel: IModelAdapter = new ModelAdapter('ReactionModel');
+	postUserReactionModel: IModelAdapter = new ModelAdapter('PostUserReactionModel');
 }

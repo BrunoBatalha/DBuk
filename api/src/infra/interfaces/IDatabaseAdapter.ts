@@ -5,4 +5,6 @@ export interface IDatabaseAdapter {
 	postModel: IModelAdapter;
 	categoryModel: IModelAdapter;
 	postCategoryModel: IModelAdapter;
+	reactionModel: IModelAdapter;
+	postUserReactionModel: IModelAdapter;
 }

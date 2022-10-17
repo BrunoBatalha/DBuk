@@ -4,6 +4,8 @@ import { SequelizeModels } from '../interfaces/SequelizeModel';
 import { CategoryModel } from '../models/category.model';
 import { PostModel } from '../models/post.model';
 import { PostCategoryModel } from '../models/postCategory.model';
+import { PostUserReactionModel } from '../models/postUserReaction.model';
+import { ReactionModel } from '../models/reaction.model';
 import { UserModel } from '../models/user.model';
 dotenv.config();
 
@@ -45,16 +47,18 @@ export class SequelizeSingleton {
 	}
 
 	private configureModels(): void {
-		this.models = this.defineModels(this.database);
+		this.defineModels(this.database);
 		this.associateModels(this.models);
 	}
 
-	private defineModels(sequelize: Sequelize): SequelizeModels {
-		return {
+	private defineModels(sequelize: Sequelize): void {
+		this.models = {
 			UserModel: UserModel.define(sequelize),
 			PostModel: PostModel.define(sequelize),
 			CategoryModel: CategoryModel.define(sequelize),
-			PostCategoryModel: PostCategoryModel.define(sequelize)
+			PostCategoryModel: PostCategoryModel.define(sequelize),
+			ReactionModel: ReactionModel.define(sequelize),
+			PostUserReactionModel: PostUserReactionModel.define(sequelize)
 		};
 	}
 
@@ -63,6 +67,8 @@ export class SequelizeSingleton {
 		PostModel.associations(models);
 		CategoryModel.associations(models);
 		PostCategoryModel.associations(models);
+		ReactionModel.associations(models);
+		PostUserReactionModel.associations(models);
 	}
 
 	private async checkConnection(): Promise<void> {

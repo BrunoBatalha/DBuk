@@ -1,5 +1,6 @@
 import { FileInputDto } from '@/app/useCases/post/publishPost/boundaries/PublishPostInputBoundary';
 import { PostControllerFactory } from '@/main/compositionRoot/PostControllerFactory';
+import { ReactPostControllerFactory } from '@/main/compositionRoot/ReactPostControllerFactory';
 import { ShowTimelineControllerFactory } from '@/main/compositionRoot/ShowTimelineFactory';
 import { Router } from 'express';
 import expressFileUpload from 'express-fileupload';
@@ -27,6 +28,16 @@ export const setUpPostRoutes = (router: Router): void => {
 		const { statusCode, output } = await ShowTimelineControllerFactory.create().execute({
 			username: req.query.username as string,
 			password: req.query.password as string
+		});
+		res.status(statusCode as number);
+		res.json(output);
+	});
+
+	router.post('/react-post/:id', async (req, res) => {
+		const { statusCode, output } = await ReactPostControllerFactory.create().execute({
+			username: req.body.username,
+			password: req.body.password,
+			postId: Number(req.params.id)
 		});
 		res.status(statusCode as number);
 		res.json(output);

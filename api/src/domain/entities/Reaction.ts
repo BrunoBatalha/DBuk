@@ -1,4 +1,8 @@
 export type Reaction = {
 	id: number;
-	title: string;
+	name: ReactionEnum;
 };
+
+enum ReactionEnum {
+	Like = 'like'
+}

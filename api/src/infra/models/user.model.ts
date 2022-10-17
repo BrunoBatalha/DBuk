@@ -32,5 +32,11 @@ export const UserModel: SequelizeTableCreation = {
 		models.UserModel.hasMany(models.PostModel, {
 			as: 'posts'
 		});
+
+		models.UserModel.belongsToMany(models.ReactionModel, {
+			through: models.PostUserReactionModel,
+			foreignKey: 'reactionId',
+			as: 'reactions'
+		});
 	}
 };

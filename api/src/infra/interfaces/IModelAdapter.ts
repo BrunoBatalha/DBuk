@@ -7,4 +7,6 @@ export interface IModelAdapter {
 	findOne(where: { [k: string]: string | number }, includes?: ModelAlias[]): Promise<object | null>;
 	list(where: { [k: string]: string | number }, includes?: ModelAlias[]): Promise<object[]>;
 	createMany(object: object[], transaction: Transaction): Promise<void>;
+	update(object: object, where: { [k: string]: string | number }, transaction: Transaction): Promise<void>;
+	delete(where: { [k: string]: string | number }, transaction: Transaction): Promise<void>;
 }

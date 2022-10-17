@@ -26,6 +26,21 @@ export class ModelAdapter implements IModelAdapter {
 		).get();
 	}
 
+	async update(object: object, where: { [k: string]: string | number }, transaction: Transaction): Promise<void> {
+		await SequelizeSingleton.getInstance().models[this.modelClass].update(object, {
+			transaction: transaction,
+			where
+		});
+	}
+
+	async delete(where: { [k: string]: string | number }, transaction: Transaction): Promise<void> {
+		await SequelizeSingleton.getInstance().models[this.modelClass].destroy({
+			where,
+			force: true,
+			transaction: transaction
+		});
+	}
+
 	async findOne(where: { [k: string]: string | number }, includes?: ModelAlias[] | undefined): Promise<object | null> {
 		const data = await this.listEntities(where, includes);
 
