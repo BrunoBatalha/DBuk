@@ -1,4 +1,3 @@
-import * as dotenv from 'dotenv';
 import { Sequelize } from 'sequelize';
 import { SequelizeModels } from '../interfaces/SequelizeModel';
 import { CategoryModel } from '../models/category.model';
@@ -7,7 +6,6 @@ import { PostCategoryModel } from '../models/postCategory.model';
 import { PostUserReactionModel } from '../models/postUserReaction.model';
 import { ReactionModel } from '../models/reaction.model';
 import { UserModel } from '../models/user.model';
-dotenv.config();
 
 export class SequelizeSingleton {
 	private static instance: SequelizeSingleton;

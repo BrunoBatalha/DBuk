@@ -41,8 +41,12 @@ export class ModelAdapter implements IModelAdapter {
 		});
 	}
 
-	async findOne(where: { [k: string]: string | number }, includes?: ModelAlias[] | undefined): Promise<object | null> {
-		const data = await this.listEntities(where, includes);
+	async findOne(
+		where: { [k: string]: string | number },
+		includes?: ModelAlias[],
+		transaction?: Transaction
+	): Promise<object | null> {
+		const data = await this.listEntities(where, includes, transaction);
 
 		return data.length > 0 ? data[0].get({ plain: true }) : null;
 	}
@@ -54,11 +58,13 @@ export class ModelAdapter implements IModelAdapter {
 
 	private async listEntities(
 		where: { [k: string]: string | number },
-		includes?: ModelAlias[] | undefined
+		includes?: ModelAlias[],
+		transaction?: Transaction
 	): Promise<Array<Model<any, any>>> {
 		return await SequelizeSingleton.getInstance().models[this.modelClass].findAll({
 			where: { ...where },
-			include: includes
+			include: includes,
+			transaction
 		});
 	}
 }

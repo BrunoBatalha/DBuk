@@ -8,10 +8,14 @@ export class PostUserReactionRepository implements IPostUserReactionRepository {
 	constructor(private databaseAdapter: IDatabaseAdapter) { }
 
 	async exists(userId: number, postId: number): Promise<boolean> {
-		const entity = await this.databaseAdapter.postUserReactionModel.findOne({
-			userId,
-			postId
-		});
+		const entity = await this.databaseAdapter.postUserReactionModel.findOne(
+			{
+				userId,
+				postId
+			},
+			undefined,
+			this.transaction
+		);
 
 		return !!entity;
 	}

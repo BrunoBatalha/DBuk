@@ -4,7 +4,7 @@ import { SequelizeTableCreation } from '../interfaces/SequelizeTableCreation';
 export const PostUserReactionModel: SequelizeTableCreation = {
 	define(sequelize) {
 		return sequelize.define(
-			'posts_user_reactions',
+			'posts_users_reactions',
 			{
 				userId: {
 					primaryKey: true,

@@ -2,7 +2,7 @@ import { IReactPostUseCase } from '@/adapters/interfaces/useCases/post/reactPost
 import { IReactPostValidator } from '@/adapters/interfaces/useCases/post/reactPost/IReactPost.validator';
 import { IBaseOutputBoundary } from '@/app/useCases/IBaseOutputBoundary';
 import { ReactPostInputDto } from '@/app/useCases/post/reactPost/dtos/ReactPostInput.dto';
-import { UseCaseManager } from '@/app/useCases/UseCaseManager';
+import { UseCaseManagerLoadManyData } from '@/app/useCases/UseCaseManagerLoadManyData';
 import { statusCodes } from '@/infra/statusCodes';
 
 interface IResponse {
@@ -26,7 +26,7 @@ export class ReactPostController {
 
 	async execute(input: ReactPostInputDto): Promise<IResponse> {
 		try {
-			const usecase = new UseCaseManager(this.usecase, this.validator, input);
+			const usecase = new UseCaseManagerLoadManyData(this.usecase, this.validator, input);
 			const response = await usecase.execute();
 			if (!response.statusCode) {
 				response.statusCode = statusCodes.CREATED;
