@@ -1,5 +1,5 @@
 import { IShowTimelineUseCase } from '@/adapters/interfaces/useCases/post/showTimeline/IShowTimeline.usecase';
-import { PostDto } from '@/app/dtos/post/Post.dto';
+import { PostDto } from '@/app/dtos';
 import { IPostRepository } from '@/app/interfaces/repositories/IPost.repository';
 import { Post } from '@/domain/entities/Post';
 import { ShowTimelineInputDto } from './dtos/ShowTimelineInput.dto';

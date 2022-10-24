@@ -1,4 +1,4 @@
-import { UserControllerFactory } from '@/main/compositionRoot/UserControllerFactory';
+import { UserControllerFactory } from '@/main/compositionRoot/factories';
 import { Router } from 'express';
 
 export const setUpUserRoutes = (router: Router): void => {

@@ -1,25 +1,34 @@
-import { Box, Button, Grid, IconButton } from '@mui/material';
+import {
+	Box,
+	Button,
+	Checkbox,
+	FormControl,
+	Grid,
+	IconButton,
+	InputLabel,
+	ListItemText,
+	MenuItem,
+	OutlinedInput,
+	Select
+} from '@mui/material';
 import { DialogDefault } from 'shared/components/dialog-default/dialog-default';
 import { PhotoCameraIcon } from 'shared/icons';
 import { CropImage } from '../crop-image/crop-image';
-import { IPublishPostViewModel } from './IPublishPostViewModel';
 import { styles } from './styles';
+import { DependenciesUsePublishPost, usePublishPost } from './usePublishPost';
 
-type Props = {
-	viewModel: IPublishPostViewModel;
-};
-
-export function PublishPost({ viewModel }: Props): JSX.Element {
+export function PublishPost(dependecies: DependenciesUsePublishPost): JSX.Element {
 	const {
 		configureImagePreSelected,
 		onSubmit,
 		setIsOpenDialogCropImage,
 		isOpenDialogCropImage,
 		setImagePreSelected,
-		setImageCropped,
-		imageCropped,
-		imagePreSelected
-	} = viewModel();
+		setForm,
+		form,
+		imagePreSelected,
+		categories
+	} = usePublishPost(dependecies);
 
 	return (
 		<Box
@@ -30,6 +39,33 @@ export function PublishPost({ viewModel }: Props): JSX.Element {
 				onSubmit();
 			}}
 		>
+			<FormControl sx={{ marginTop: 4, marginBottom: 4, width: 300 }}>
+				<InputLabel id="input-select-categories">Select category</InputLabel>
+				<Select
+					labelId="input-select-categories"
+					multiple
+					value={form.categories}
+					onChange={({ target: { value } }) => {
+						const categoriesSelected = typeof value === 'string' ? value.split(',') : value;
+						setForm((prev) => ({ ...prev, categories: categoriesSelected as number[] }));
+					}}
+					input={<OutlinedInput label="Select category" />}
+					renderValue={(selected) => {
+						return categories
+							.filter((c) => selected.indexOf(c.id) !== -1)
+							.map((c) => c.title)
+							.join(', ');
+					}}
+				>
+					{categories.map((c) => (
+						<MenuItem key={c.id} value={c.id}>
+							<Checkbox checked={form.categories.indexOf(c.id) > -1} />
+							<ListItemText primary={c.title} />
+						</MenuItem>
+					))}
+				</Select>
+			</FormControl>
+
 			<Grid container alignItems="center">
 				<Grid item xs={10}>
 					<Button
@@ -37,7 +73,7 @@ export function PublishPost({ viewModel }: Props): JSX.Element {
 						variant="contained"
 						size="large"
 						type="submit"
-						disabled={imageCropped === null}
+						disabled={form.imageCropped === null}
 					>
 						Publish
 					</Button>
@@ -58,7 +94,7 @@ export function PublishPost({ viewModel }: Props): JSX.Element {
 				</Grid>
 			</Grid>
 
-			<Box component="img" sx={styles.Image} src={imageCropped?.url} />
+			<Box component="img" sx={styles.Image} src={form.imageCropped?.url} />
 
 			<DialogDefault
 				isOpen={isOpenDialogCropImage}
@@ -66,7 +102,7 @@ export function PublishPost({ viewModel }: Props): JSX.Element {
 					setIsOpenDialogCropImage(false);
 				}}
 				onCancel={(): void => {
-					setImageCropped(null);
+					setForm((prev) => ({ ...prev, imageCropped: null }));
 					setImagePreSelected(null);
 					setIsOpenDialogCropImage(false);
 				}}
@@ -74,7 +110,12 @@ export function PublishPost({ viewModel }: Props): JSX.Element {
 					setIsOpenDialogCropImage(false);
 				}}
 			>
-				{imagePreSelected && <CropImage urlImage={imagePreSelected.url} onChangeImage={setImageCropped} />}
+				{imagePreSelected && (
+					<CropImage
+						urlImage={imagePreSelected.url}
+						onChangeImage={(img) => setForm((prev) => ({ ...prev, imageCropped: img }))}
+					/>
+				)}
 			</DialogDefault>
 		</Box>
 	);

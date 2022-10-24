@@ -1,4 +1,6 @@
+//TODO: colocar em um hook toda essa logica + a logica ja que tem la dentro
 import { Area } from 'react-easy-crop';
+
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 export const createImage = (url: string): Promise<HTMLImageElement> =>
 	new Promise((resolve, reject) => {

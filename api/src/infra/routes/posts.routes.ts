@@ -1,7 +1,8 @@
-import { FileInputDto } from '@/app/useCases/post/publishPost/boundaries/PublishPostInputBoundary';
-import { PostControllerFactory } from '@/main/compositionRoot/PostControllerFactory';
-import { ReactPostControllerFactory } from '@/main/compositionRoot/ReactPostControllerFactory';
-import { ShowTimelineControllerFactory } from '@/main/compositionRoot/ShowTimelineFactory';
+import {
+	PostControllerFactory,
+	ReactPostControllerFactory,
+	ShowTimelineControllerFactory
+} from '@/main/compositionRoot/factories';
 import { Router } from 'express';
 import expressFileUpload from 'express-fileupload';
 
@@ -9,17 +10,18 @@ export const setUpPostRoutes = (router: Router): void => {
 	router.post('/posts', async (req, res) => {
 		const buffer = (req.files?.image as expressFileUpload.UploadedFile).data;
 		const mimetype = (req.files?.image as expressFileUpload.UploadedFile).mimetype;
-		const imageDto: FileInputDto = {
-			buffer,
-			contentType: mimetype,
-			filename: `${new Date().getTime()}`
-		};
-
 		const { statusCode, output } = await PostControllerFactory.create().execute({
 			...req.body,
-			categoriesIds: req.body.categoriesIds.map((ci: string) => Number(ci)),
-			image: imageDto
+			categoriesIds: req.body.categoriesIds.map
+				? req.body.categoriesIds.map((ci: string) => Number(ci))
+				: [Number(req.body.categoriesIds)],
+			image: {
+				buffer,
+				contentType: mimetype,
+				filename: `${new Date().getTime()}`
+			}
 		});
+
 		res.status(statusCode as number);
 		res.json(output);
 	});

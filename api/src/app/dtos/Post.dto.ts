@@ -1,5 +1,5 @@
 import { Post } from '@/domain/entities/Post';
-import { UserDto } from '../user/User.dto';
+import { UserDto } from './User.dto';
 
 type PostDtoParams = {
 	id: string;

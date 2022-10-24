@@ -1,11 +1,11 @@
 export type CategoryParams = {
 	id: number;
-	title?: string;
+	title: string;
 };
 
 export class Category {
 	id: number;
-	title?: string;
+	title!: string;
 
 	constructor(params: CategoryParams) {
 		this.id = params.id;
