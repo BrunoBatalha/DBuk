@@ -1,6 +1,7 @@
 import cors from 'cors';
 import express from 'express';
 import expressFileUpload from 'express-fileupload';
+import { setUpCategoriesRoutes } from './categories.routes';
 import { setUpPostRoutes } from './posts.routes';
 import { setUpUserRoutes } from './users.routes';
 const app = express();
@@ -9,10 +10,13 @@ const router = express.Router();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static('uploads'));
 app.use(expressFileUpload({}));
 
 setUpPostRoutes(router);
+setUpCategoriesRoutes(router);
 setUpUserRoutes(router);
+
 app.use(router);
 
 export const routes = {

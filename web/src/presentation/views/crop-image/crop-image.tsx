@@ -1,7 +1,7 @@
 import { Box, Grid, Slider, Typography } from '@mui/material';
-import { ImageSelection } from 'presentation/view-models/publish-post/publish-post-view-model';
 import { useCallback, useEffect, useState } from 'react';
 import Cropper, { Area } from 'react-easy-crop';
+import { ImageSelection } from '../publish-post/usePublishPost';
 import getCroppedImg from './crop-image-aux';
 
 type Props = {
@@ -60,10 +60,7 @@ export function CropImage({ urlImage, onChangeImage }: Props): JSX.Element {
 				/>
 			</Box>
 			<Grid container>
-				<Grid
-					item
-					xs={12}
-				>
+				<Grid item xs={12}>
 					<Typography variant="overline">Zoom</Typography>
 					<Slider
 						value={zoom}
@@ -74,10 +71,7 @@ export function CropImage({ urlImage, onChangeImage }: Props): JSX.Element {
 						onChange={(_, zoom): void => setZoom(zoom as number)}
 					/>
 				</Grid>
-				<Grid
-					item
-					xs={12}
-				>
+				<Grid item xs={12}>
 					<Typography variant="overline">Rotation</Typography>
 					<Slider
 						value={rotation}

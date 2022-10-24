@@ -1,6 +1,6 @@
-import { IReactPostUseCase } from '@/adapters/interfaces/useCases/post/reactPost/IReactPost.usecase';
+import { IReactPostUseCase } from '@/adapters/interfaces';
+import { IPostUserReactionRepository } from '@/app/interfaces';
 import { IManagerTransactions } from '@/app/interfaces/IManagerTransactions';
-import { IPostUserReactionRepository } from '@/app/interfaces/repositories/IPostUserReaction.repository';
 import { ReactPostInputDto } from './dtos/ReactPostInput.dto';
 import { ReactPostValidatorOutput } from './ReactPost.validator';
 
