@@ -1,29 +1,20 @@
-import { Category } from './Category';
-import { User } from './User';
-
-export type PostParams = {
-	id?: number;
-	user: User;
-	imageUri: string;
-	createdAt: Date;
-};
+import { Reaction, User } from '.';
 
 export class Post {
 	id?: number;
 	createdAt: Date;
 	imageUri: string;
 	private user: User;
-	private categories: Category[] = [];
+	private reactions: Reaction[] = [];
+	private usersReactions: Post.UsersReactions[] = [];
 
-	constructor(params: PostParams) {
+	constructor(params: Post.Params) {
 		this.id = params.id;
 		this.user = params.user;
 		this.createdAt = params.createdAt;
 		this.imageUri = params.imageUri;
-	}
-
-	get listCategoriesFromPost(): Category[] {
-		return this.categories;
+		this.reactions = params.reactions || [];
+		this.usersReactions = params.usersReactions || [];
 	}
 
 	get userId(): number {
@@ -38,16 +29,30 @@ export class Post {
 		return this.user.username;
 	}
 
-	static create(params: PostParams): Post {
+	get amountReactions(): number {
+		return this.reactions.length;
+	}
+
+	isReactedByUser(userId: number): boolean {
+		return this.usersReactions.some((pur) => pur.userId === userId);
+	}
+
+	static create(params: Post.Params): Post {
 		return new Post(params);
 	}
+}
 
-	addCategories(...categories: Category[]): void {
-		const hasCategoriesRepeated = this.listCategoriesFromPost.some((c) => categories.some((cc) => cc === c));
-		if (hasCategoriesRepeated) {
-			throw new Error('category repeated');
-		}
+export namespace Post {
+	export type Params = {
+		id?: number;
+		user: User;
+		imageUri: string;
+		createdAt: Date;
+		reactions?: Reaction[];
+		usersReactions?: Post.UsersReactions[];
+	};
 
-		this.categories = [...this.listCategoriesFromPost, ...categories];
-	}
+	export type UsersReactions = {
+		userId: number;
+	};
 }

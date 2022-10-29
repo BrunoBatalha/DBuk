@@ -1,4 +1,5 @@
 import { DataTypes } from 'sequelize';
+import { ModelAliasAssociationEnum } from '../interfaces/ModelAlias';
 import { SequelizeTableCreation } from '../interfaces/SequelizeTableCreation';
 
 export const ReactionModel: SequelizeTableCreation = {
@@ -18,8 +19,8 @@ export const ReactionModel: SequelizeTableCreation = {
 	associations(models) {
 		models.ReactionModel.belongsToMany(models.PostModel, {
 			through: models.PostUserReactionModel,
-			foreignKey: 'postId',
-			as: 'posts'
+			foreignKey: 'reactionId',
+			as: ModelAliasAssociationEnum.posts
 		});
 	}
 };

@@ -1,4 +1,5 @@
 import { DataTypes, Model, ModelStatic, Sequelize } from 'sequelize';
+import { ModelAliasAssociationEnum } from '../interfaces/ModelAlias';
 import { SequelizeModels } from '../interfaces/SequelizeModel';
 import { SequelizeTableCreation } from '../interfaces/SequelizeTableCreation';
 
@@ -30,13 +31,13 @@ export const UserModel: SequelizeTableCreation = {
 
 	associations(models: SequelizeModels): void {
 		models.UserModel.hasMany(models.PostModel, {
-			as: 'posts'
+			as: ModelAliasAssociationEnum.posts
 		});
 
 		models.UserModel.belongsToMany(models.ReactionModel, {
 			through: models.PostUserReactionModel,
 			foreignKey: 'reactionId',
-			as: 'reactions'
+			as: ModelAliasAssociationEnum.reactions
 		});
 	}
 };

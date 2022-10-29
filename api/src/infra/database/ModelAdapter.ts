@@ -1,6 +1,6 @@
 import { Model, Transaction } from 'sequelize';
 import { IModelAdapter } from '../interfaces/IModelAdapter';
-import { ModelAlias } from '../interfaces/ModelAlias';
+import { ModelAliasAssociation } from '../interfaces/ModelAlias';
 import { ModelName } from '../interfaces/ModelName';
 import { SequelizeSingleton } from './SequelizeSingleton';
 
@@ -43,28 +43,30 @@ export class ModelAdapter implements IModelAdapter {
 
 	async findOne(
 		where: { [k: string]: string | number },
-		includes?: ModelAlias[],
+		includes?: ModelAliasAssociation[],
 		transaction?: Transaction
 	): Promise<object | null> {
-		const data = await this.listEntities(where, includes, transaction);
+		const data = await this.listEntities({ where, includes, transaction });
 
 		return data.length > 0 ? data[0].get({ plain: true }) : null;
 	}
 
-	async list(where: { [k: string]: string | number }, includes?: ModelAlias[] | undefined): Promise<object[]> {
-		const data = await this.listEntities(where, includes);
+	async list(where: { [k: string]: string | number }, includes?: ModelAliasAssociation[]): Promise<object[]> {
+		const data = await this.listEntities({ where, includes });
 		return data.map((d) => d.get({ plain: true }));
 	}
 
-	private async listEntities(
-		where: { [k: string]: string | number },
-		includes?: ModelAlias[],
-		transaction?: Transaction
-	): Promise<Array<Model<any, any>>> {
+	async listOrderBy(params: IModelAdapter.ListOrderByParams): Promise<object[]> {
+		const data = await this.listEntities(params);
+		return data.map((d) => d.get({ plain: true }));
+	}
+
+	private async listEntities(params: IModelAdapter.ListOrderByParams): Promise<Array<Model<any, any>>> {
 		return await SequelizeSingleton.getInstance().models[this.modelClass].findAll({
-			where: { ...where },
-			include: includes,
-			transaction
+			where: { ...params.where },
+			order: params.order ? [params.order ? [params.order.parameter, params.order.orderBy] : ['', '']] : undefined,
+			include: params.includes,
+			transaction: params.transaction
 		});
 	}
 }

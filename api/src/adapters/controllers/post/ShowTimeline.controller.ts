@@ -3,7 +3,7 @@ import { IShowTimelineValidator } from '@/adapters/interfaces/useCases/post/show
 import { IBaseOutputBoundary } from '@/app/useCases/IBaseOutputBoundary';
 import { ShowTimelineInputDto } from '@/app/useCases/post/showTimeline/dtos/ShowTimelineInput.dto';
 import { ShowtimelineOutputDto as ShowTimelineOutputDto } from '@/app/useCases/post/showTimeline/dtos/ShowTimelineOutput.dto';
-import { UseCaseManager } from '@/app/useCases/UseCaseManager';
+import { UseCaseManagerLoadManyData } from '@/app/useCases/UseCaseManagerLoadManyData';
 import { statusCodes } from '@/infra/statusCodes';
 
 interface IResponse {
@@ -27,7 +27,7 @@ export class ShowTimelineController {
 
 	async execute(input: ShowTimelineInputDto): Promise<IResponse> {
 		try {
-			const usecase = new UseCaseManager(this.usecase, this.validator, input);
+			const usecase = new UseCaseManagerLoadManyData(this.usecase, this.validator, input);
 			const response = await usecase.execute();
 			if (!response.statusCode) {
 				response.statusCode = statusCodes.CREATED;

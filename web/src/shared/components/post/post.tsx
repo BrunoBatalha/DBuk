@@ -21,7 +21,7 @@ export function Post({ post, onReactPost }: Props): JSX.Element {
 
 			<Divider sx={{ margin: (theme) => theme.spacing(2, 0) }} />
 
-			<PostActions isReacted={post.isReacted()} onReactPost={() => onReactPost(post.id)} />
+			<PostActions isReacted={post.isReacted} onReactPost={() => onReactPost(post.id)} />
 		</>
 	);
 }

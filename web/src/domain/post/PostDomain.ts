@@ -9,6 +9,7 @@ type PostDomainParams = {
 	user: UserDomain;
 	reaction?: ReactionEnum;
 	createdAt: Date;
+	isReacted: boolean;
 };
 
 export class PostDomain {
@@ -16,6 +17,7 @@ export class PostDomain {
 	image: string;
 	user: UserDomain;
 	reaction?: ReactionEnum | null;
+	isReacted: boolean = false;
 	createdAt: Date;
 
 	private constructor(params: PostDomainParams) {
@@ -24,6 +26,7 @@ export class PostDomain {
 		this.user = params.user;
 		this.reaction = params.reaction;
 		this.createdAt = new Date(params.createdAt);
+		this.isReacted = params.isReacted;
 	}
 
 	getUsername(): string {
@@ -42,10 +45,6 @@ export class PostDomain {
 		}
 
 		return this.formatDate();
-	}
-
-	isReacted(): boolean {
-		return !!this.reaction;
 	}
 
 	private diffHoursBetweenNowAndPublishedPost(): { diffHours: number; diffMinutes: number } {

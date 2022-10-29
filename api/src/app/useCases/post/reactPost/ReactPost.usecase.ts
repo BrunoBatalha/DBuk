@@ -5,7 +5,7 @@ import { ReactPostInputDto } from './dtos/ReactPostInput.dto';
 import { ReactPostValidatorOutput } from './ReactPost.validator';
 
 export class ReactPostUseCase implements IReactPostUseCase {
-	private outputDataValidator!: ReactPostValidatorOutput;
+	outputDataValidator!: ReactPostValidatorOutput;
 
 	constructor(
 		private postUserReactionRepository: IPostUserReactionRepository,
@@ -32,7 +32,6 @@ export class ReactPostUseCase implements IReactPostUseCase {
 
 			await this.managerTransactions.confirmTransactions();
 		} catch (error: any) {
-			// TODO: fazer rollback para remover arquivo da aws/local caso tenha dado erro
 			await this.managerTransactions.undoTransactions();
 			throw new Error(error);
 		}

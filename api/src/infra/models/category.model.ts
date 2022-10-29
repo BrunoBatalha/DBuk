@@ -1,4 +1,5 @@
 import { DataTypes } from 'sequelize';
+import { ModelAliasAssociationEnum } from '../interfaces/ModelAlias';
 import { SequelizeTableCreation } from '../interfaces/SequelizeTableCreation';
 
 export const CategoryModel: SequelizeTableCreation = {
@@ -23,7 +24,7 @@ export const CategoryModel: SequelizeTableCreation = {
 		models.CategoryModel.belongsToMany(models.PostModel, {
 			through: models.PostCategoryModel,
 			foreignKey: 'postId',
-			as: 'PostModel'
+			as: ModelAliasAssociationEnum.posts
 		});
 	}
 };

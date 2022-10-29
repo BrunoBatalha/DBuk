@@ -1,7 +1,7 @@
 import { IRepositoryTransaction } from '@/app/interfaces/repositories/IRepositoryTransaction';
 import { Transaction } from 'sequelize/types';
 import { IDatabaseAdapter } from '../interfaces/IDatabaseAdapter';
-import { ModelAlias } from '../interfaces/ModelAlias';
+import { ModelAliasAssociation } from '../interfaces/ModelAlias';
 import { IRepositoryIncludes } from '../interfaces/repositories/IRepositoryIncludes';
 
 export abstract class AbstractRepository<TRepository>
@@ -9,13 +9,13 @@ export abstract class AbstractRepository<TRepository>
 {
 	protected databaseAdapter: IDatabaseAdapter;
 	protected transaction!: Transaction;
-	protected includes: ModelAlias[] = [];
+	protected includes: ModelAliasAssociation[] = [];
 
 	constructor(databaseAdapter: IDatabaseAdapter) {
 		this.databaseAdapter = databaseAdapter;
 	}
 
-	addInclude(modelAlias: ModelAlias): TRepository {
+	addInclude(modelAlias: ModelAliasAssociation): TRepository {
 		this.includes.push(modelAlias);
 		return this.getRepository();
 	}

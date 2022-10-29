@@ -26,6 +26,8 @@ type ListPostsResponse = {
 		id: number;
 		createdAt: Date;
 		reaction?: ReactionEnum;
+		isReacted: boolean;
+		amountReactions: number;
 		user: {
 			id: number;
 			username: string;

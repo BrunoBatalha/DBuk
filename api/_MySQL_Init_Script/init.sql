@@ -10,6 +10,9 @@ create table if not exists dbuk_db.users (
 insert into dbuk_db.users (username, password, createdAt, updatedAt)
 values ('root', 'root', now(), now());
 
+insert into dbuk_db.users (username, password, createdAt, updatedAt)
+values ('root1', 'root1', now(), now());
+
 create table if not exists dbuk_db.posts (
 	id int not null auto_increment,
 	userId int not null,

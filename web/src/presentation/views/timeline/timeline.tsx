@@ -1,5 +1,4 @@
 import { Box } from '@mui/material';
-import { ReactionEnum } from 'domain/enums/ReactionEnum';
 import { PostDomain } from 'domain/post/PostDomain';
 import { IReactPostUseCase } from 'presentation/interfaces/usecases/IReactPostUseCase';
 import { IShowTimelineUseCase } from 'presentation/interfaces/usecases/IShowTimelineUseCase';
@@ -29,7 +28,8 @@ export function Timeline({ showTimelineUseCase, reactPostUseCase }: Props) {
 				if (i !== postIndex) {
 					return p;
 				}
-				p.reaction = p.isReacted() ? null : ReactionEnum.Like;
+
+				p.isReacted = !p.isReacted;
 				return p;
 			})
 		);

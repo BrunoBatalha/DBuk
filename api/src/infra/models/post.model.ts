@@ -1,4 +1,5 @@
 import { DataTypes } from 'sequelize';
+import { ModelAliasAssociationEnum } from '../interfaces/ModelAlias';
 import { SequelizeTableCreation } from '../interfaces/SequelizeTableCreation';
 
 export const PostModel: SequelizeTableCreation = {
@@ -22,13 +23,19 @@ export const PostModel: SequelizeTableCreation = {
 	associations(models) {
 		models.PostModel.belongsTo(models.UserModel, {
 			foreignKey: 'userId',
-			as: 'user'
+			as: ModelAliasAssociationEnum.user
 		});
 
 		models.PostModel.belongsToMany(models.CategoryModel, {
 			through: models.PostCategoryModel,
 			foreignKey: 'categoryId',
-			as: 'categories'
+			as: ModelAliasAssociationEnum.categories
+		});
+
+		models.PostModel.belongsToMany(models.ReactionModel, {
+			through: models.PostUserReactionModel,
+			foreignKey: 'postId',
+			as: ModelAliasAssociationEnum.reactions
 		});
 	}
 };

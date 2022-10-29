@@ -12,7 +12,7 @@ export class PublishPostUseCase implements IPublishPostUseCase {
 	private postRepository: IPostRepository;
 	private postCategoryRepository: IPostCategoryRepository;
 	private managerTransactions: IManagerTransactions;
-	private outputDataValidator!: PublishPostValidatorOutput;
+	outputDataValidator!: PublishPostValidatorOutput;
 
 	constructor(
 		postRepository: IPostRepository,
