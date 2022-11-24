@@ -1,4 +1,4 @@
-import { PublishPostUseCaseParams } from 'data/usecases/publish-post/PublishPostUseCase';
+import { PublishPostUseCaseParams } from 'data/usecases/PublishPostUseCase';
 
 export interface IPublishPostUseCase {
 	execute(request: PublishPostUseCaseParams): Promise<void>;

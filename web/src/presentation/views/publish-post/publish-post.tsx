@@ -1,70 +1,82 @@
-import {
-	Box,
-	Button,
-	Checkbox,
-	FormControl,
-	Grid,
-	IconButton,
-	InputLabel,
-	ListItemText,
-	MenuItem,
-	OutlinedInput,
-	Select
-} from '@mui/material';
-import { DialogDefault } from 'shared/components/dialog-default/dialog-default';
-import { PhotoCameraIcon } from 'shared/icons';
+import { Box, Button, Grid, IconButton } from '@mui/material';
+import { CategoryDomain } from 'domain/entities';
+import { DialogDefault } from 'presentation/components/dialog-default/dialog-default';
+import { PhotoCameraIcon } from 'presentation/components/icons';
+import { IListCategoriesUseCase, IPublishPostUseCase } from 'presentation/interfaces/usecases';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { CropImage } from '../crop-image/crop-image';
+import { InputSelectCategories } from './components/input-select-categories/input-select-categories';
 import { styles } from './styles';
-import { DependenciesUsePublishPost, usePublishPost } from './usePublishPost';
 
-export function PublishPost(dependecies: DependenciesUsePublishPost): JSX.Element {
-	const {
-		configureImagePreSelected,
-		onSubmit,
-		setIsOpenDialogCropImage,
-		isOpenDialogCropImage,
-		setImagePreSelected,
-		setForm,
-		form,
-		imagePreSelected,
-		categories
-	} = usePublishPost(dependecies);
+type Props = {
+	publishPostUseCase: IPublishPostUseCase;
+	listCategoriesUseCase: IListCategoriesUseCase;
+};
+
+type FormStatePublishPost = {
+	imageCropped: ImageSelection;
+	categories: number[];
+};
+
+export type ImageSelection = {
+	blob: Blob;
+	url: string;
+} | null;
+
+export function PublishPost({ listCategoriesUseCase, publishPostUseCase }: Props): JSX.Element {
+	const { t } = useTranslation();
+	const [imagePreSelected, setImagePreSelected] = useState<ImageSelection>(null);
+	const [isOpenDialogCropImage, setIsOpenDialogCropImage] = useState<boolean>(false);
+	const [categories, setCategories] = useState<CategoryDomain[]>([]);
+	const [form, setForm] = useState<FormStatePublishPost>({
+		imageCropped: null,
+		categories: []
+	});
+
+	useEffect(() => {
+		listCategoriesUseCase.execute().then((loadedCategories) => {
+			setCategories(loadedCategories);
+		});
+	}, []);
+
+	async function onSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
+		e.preventDefault();
+		if (!form.imageCropped) {
+			return;
+		}
+
+		await publishPostUseCase.execute({
+			image: form.imageCropped.blob,
+			categoriesIds: form.categories
+		});
+
+		setForm({ imageCropped: null, categories: [] });
+		setImagePreSelected(null);
+	}
+
+	function onChangeFile({ target }: React.ChangeEvent<HTMLInputElement>) {
+		if (target.files && target.files.length !== 0) {
+			setImagePreSelected({
+				blob: target.files[0],
+				url: URL.createObjectURL(target.files[0])
+			});
+			setIsOpenDialogCropImage(true);
+			target.value = '';
+		}
+	}
 
 	return (
-		<Box
-			sx={styles.Form}
-			component="form"
-			onSubmit={(e): void => {
-				e.preventDefault();
-				onSubmit();
-			}}
-		>
-			<FormControl sx={{ marginTop: 4, marginBottom: 4, width: 300 }}>
-				<InputLabel id="input-select-categories">Select category</InputLabel>
-				<Select
-					labelId="input-select-categories"
-					multiple
-					value={form.categories}
-					onChange={({ target: { value } }) => {
-						const categoriesSelected = typeof value === 'string' ? value.split(',') : value;
-						setForm((prev) => ({ ...prev, categories: categoriesSelected as number[] }));
-					}}
-					input={<OutlinedInput label="Select category" />}
-					renderValue={(selected) => {
-						return categories
-							.filter((c) => selected.indexOf(c.id) !== -1)
-							.map((c) => c.title)
-							.join(', ');
-					}}
-				>
-					{categories.map((c) => (
-						<MenuItem key={c.id} value={c.id}>
-							<Checkbox checked={form.categories.indexOf(c.id) > -1} />
-							<ListItemText primary={c.title} />
-						</MenuItem>
-					))}
-				</Select>
-			</FormControl>
+		<Box sx={styles.Form} component="form" onSubmit={onSubmit}>
+			<Box component="img" sx={styles.Image} src={form.imageCropped?.url} />
+
+			<InputSelectCategories
+				categories={categories}
+				categoriesIdSelected={form.categories}
+				onSelect={(selecteds) => {
+					setForm((prev) => ({ ...prev, categories: selecteds.map((s) => s.id) }));
+				}}
+			/>
 
 			<Grid container alignItems="center">
 				<Grid item xs={10}>
@@ -75,32 +87,19 @@ export function PublishPost(dependecies: DependenciesUsePublishPost): JSX.Elemen
 						type="submit"
 						disabled={form.imageCropped === null}
 					>
-						Publish
+						{t('new_publish.publish')}
 					</Button>
 				</Grid>
 				<Grid container item xs={2} justifyContent="center" alignItems="center">
 					<IconButton color="primary" component="label">
-						<input
-							hidden
-							type="file"
-							accept="image/png, image/jpeg"
-							onChange={(e): void => {
-								configureImagePreSelected(e.target.files);
-								setIsOpenDialogCropImage(true);
-							}}
-						/>
+						<input hidden type="file" accept="image/png, image/jpeg" onChange={onChangeFile} />
 						<PhotoCameraIcon fontSize="large" />
 					</IconButton>
 				</Grid>
 			</Grid>
 
-			<Box component="img" sx={styles.Image} src={form.imageCropped?.url} />
-
 			<DialogDefault
 				isOpen={isOpenDialogCropImage}
-				onClose={(): void => {
-					setIsOpenDialogCropImage(false);
-				}}
 				onCancel={(): void => {
 					setForm((prev) => ({ ...prev, imageCropped: null }));
 					setImagePreSelected(null);

@@ -3,22 +3,17 @@ import { User, UserParams } from '@/domain/entities/User';
 import { IDatabaseAdapter } from '../interfaces/IDatabaseAdapter';
 import { AbstractRepository } from './AbstractRepository';
 
-export class UserRepository extends AbstractRepository<UserRepository> implements IUserRepository {
+export class UserRepository extends AbstractRepository implements IUserRepository {
 	constructor(databaseAdapter: IDatabaseAdapter) {
 		super(databaseAdapter);
 	}
 
 	async create(user: User): Promise<User> {
-		const entity = await this.databaseAdapter.userModel.create(
-			{ username: user.username, password: user.password },
-			this.transaction
-		);
-		return User.create(entity as UserParams);
-	}
+		const entity = await this.databaseAdapter.userModel
+			.setTransaction(this.transaction)
+			.create({ username: user.username, password: user.password });
 
-	async getById(userId: number): Promise<User | null | unknown> {
-		const data = await this.databaseAdapter.userModel.findOne({ id: userId }, this.includes);
-		return data ? User.create(data as UserParams) : null;
+		return User.create(entity as UserParams);
 	}
 
 	async getByUsername(username: string): Promise<User | null> {
@@ -29,9 +24,5 @@ export class UserRepository extends AbstractRepository<UserRepository> implement
 	async getByUsernamePassword(username: string, password: string): Promise<User | null> {
 		const data = await this.databaseAdapter.userModel.findOne({ username: username, password: password });
 		return data ? User.create(data as UserParams) : null;
-	}
-
-	protected getRepository(): UserRepository {
-		return this;
 	}
 }

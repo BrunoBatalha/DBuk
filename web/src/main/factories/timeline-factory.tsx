@@ -1,5 +1,4 @@
-import { ReactPostUseCase } from 'data/usecases/react-post/ReactPostUseCase';
-import { ShowTimelineUseCase } from 'data/usecases/show-timeline/ShowTimelineUseCase';
+import { ReactPostUseCase, ShowTimelineUseCase } from 'data/usecases';
 import { HttpClientAdapter } from 'infra/adapters/HttpClientAdapter';
 import { Timeline } from 'presentation/views/timeline/timeline';
 

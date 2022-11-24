@@ -29,7 +29,9 @@ export const setUpPostRoutes = (router: Router): void => {
 	router.get('/posts', async (req, res) => {
 		const { statusCode, output } = await ShowTimelineControllerFactory.create().execute({
 			username: req.query.username as string,
-			password: req.query.password as string
+			password: req.query.password as string,
+			perPage: Number(req.query.perPage),
+			page: Number(req.query.page)
 		});
 		res.status(statusCode as number);
 		res.json(output);

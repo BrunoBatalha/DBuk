@@ -10,7 +10,7 @@ export class CategoryRepository implements ICategoryRepository {
 	}
 
 	async list(): Promise<Category[]> {
-		const data = await this.databaseAdapter.categoryModel.list({});
-		return data.map((d) => Category.create(d as CategoryParams));
+		const { list } = await this.databaseAdapter.categoryModel.list({});
+		return list.map((d) => Category.create(d as CategoryParams));
 	}
 }

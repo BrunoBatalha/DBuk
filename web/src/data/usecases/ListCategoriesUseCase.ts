@@ -1,5 +1,5 @@
 import { IHttpClientAdapter } from 'data/interfaces/IHttpClientAdapter';
-import { CategoryDomain } from 'domain/post/CategoryDomain';
+import { CategoryDomain } from 'domain/entities/post/CategoryDomain';
 import { AuthService } from 'infra/services/AuthService';
 import { IListCategoriesUseCase } from 'presentation/interfaces/usecases/IListCategoriesUseCase';
 

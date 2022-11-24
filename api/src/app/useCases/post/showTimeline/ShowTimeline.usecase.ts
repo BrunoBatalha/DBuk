@@ -13,17 +13,26 @@ export class ShowTimelineUseCase implements IShowTimelineUseCase {
 	constructor(postRepository: IPostRepository) {
 		this.postRepository = postRepository;
 	}
+
 	setOutputDataValidator(output: BaseValidatorOutput): void {
 		this.outputDataValidator = output;
 	}
 
-	async execute(_input: ShowTimelineInputDto): Promise<ShowtimelineOutputDto> {
+	async execute(input: ShowTimelineInputDto): Promise<ShowtimelineOutputDto> {
 		try {
-			const postList = await this.postRepository.addInclude('user').addInclude('reactions').listOrderBy({
-				parameter: 'createdAt',
-				orderBy: 'DESC'
+			const { list: postList, total } = await this.postRepository.listOrderBy({
+				limit: input.perPage,
+				offset: input.perPage * input.page,
+				orderBy: 'DESC',
+				parameterToOrder: 'createdAt'
 			});
-			return { list: this.convertToOutput(postList) } as ShowtimelineOutputDto;
+
+			return {
+				list: this.convertToOutput(postList),
+				pagination: {
+					total
+				}
+			} as ShowtimelineOutputDto;
 		} catch (error: any) {
 			throw new Error(error);
 		}

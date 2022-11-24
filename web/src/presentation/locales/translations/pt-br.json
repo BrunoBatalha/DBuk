@@ -1,0 +1,24 @@
+{
+	"timeline": {
+		"post": {
+			"published": "publicou",
+			"like": "curtir",
+			"comment": "comentar",
+			"comments": "comentários"
+		}
+	},
+	"bar_navigation": {
+		"timeline": "Linha do tempo",
+		"new_publish": "Nova publicação"
+	},
+	"new_publish": {
+		"select_category": "Selecione as categorias",
+		"publish": "Publicar",
+		"categories": {
+			"1": "Comédia",
+			"2": "Tecnologia",
+			"3": "Notícias",
+			"4": "Cozinha"
+		}
+	}
+}

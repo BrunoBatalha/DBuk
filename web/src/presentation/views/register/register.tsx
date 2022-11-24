@@ -1,13 +1,14 @@
 import { Button, Grid, TextField } from '@mui/material';
-import { IRegisterViewModel } from './IRegisterViewModel';
+import { IRegisterUseCase } from 'presentation/interfaces/usecases';
 import { ButtonSx, ContainerSx, InputSx } from './styles';
+import { useRegister } from './useRegister';
 
 type Props = {
-	viewModel: IRegisterViewModel;
+	registerUseCase: IRegisterUseCase;
 };
 
-export function Register({ viewModel }: Props): JSX.Element {
-	const { password, setPassword, setUsername, submit, username } = viewModel();
+export function Register({ registerUseCase }: Props): JSX.Element {
+	const { password, setPassword, setUsername, submit, username } = useRegister({ registerUseCase });
 
 	return (
 		<Grid container sx={ContainerSx} rowSpacing={4}>

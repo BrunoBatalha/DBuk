@@ -1,8 +1,8 @@
 import { Box, Grid, Slider, Typography } from '@mui/material';
-import { useCallback, useEffect, useState } from 'react';
-import Cropper, { Area } from 'react-easy-crop';
-import { ImageSelection } from '../publish-post/usePublishPost';
-import getCroppedImg from './crop-image-aux';
+import { useState } from 'react';
+import Cropper from 'react-easy-crop';
+import { ImageSelection } from '../publish-post/publish-post';
+import { useCropImage } from './useCropImage';
 
 type Props = {
 	urlImage: string;
@@ -11,38 +11,8 @@ type Props = {
 
 export function CropImage({ urlImage, onChangeImage }: Props): JSX.Element {
 	const [crop, setCrop] = useState({ x: 0, y: 0 });
-	const [rotation, setRotation] = useState<number>(0);
 	const [zoom, setZoom] = useState<number>(1);
-	const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
-	const [croppedImage, setCroppedImage] = useState<Blob | null>(null);
-
-	useEffect(() => {
-		if (!croppedImage) {
-			return;
-		}
-
-		onChangeImage({
-			blob: croppedImage!,
-			url: URL.createObjectURL(croppedImage!)
-		});
-	}, [croppedImage]);
-
-	const onCropComplete = useCallback((_: Area, croppedAreaPixels: Area) => {
-		setCroppedAreaPixels(croppedAreaPixels);
-		saveCroppedImage(croppedAreaPixels);
-	}, []);
-
-	const saveCroppedImage = useCallback(
-		async (croppedAreaPixels: Area) => {
-			try {
-				const newCroppedImage = await getCroppedImg(urlImage, croppedAreaPixels, rotation);
-				setCroppedImage(newCroppedImage);
-			} catch (e) {
-				console.error(e);
-			}
-		},
-		[croppedAreaPixels, rotation]
-	);
+	const cropImage = useCropImage({ urlImage, onChangeImage });
 
 	return (
 		<div>
@@ -50,12 +20,12 @@ export function CropImage({ urlImage, onChangeImage }: Props): JSX.Element {
 				<Cropper
 					image={urlImage}
 					crop={crop}
-					rotation={rotation}
+					rotation={cropImage.rotation}
 					zoom={zoom}
 					aspect={4 / 4}
 					onCropChange={setCrop}
-					onRotationChange={setRotation}
-					onCropComplete={onCropComplete}
+					onRotationChange={cropImage.setRotation}
+					onCropComplete={cropImage.onCropComplete}
 					onZoomChange={setZoom}
 				/>
 			</Box>
@@ -74,12 +44,12 @@ export function CropImage({ urlImage, onChangeImage }: Props): JSX.Element {
 				<Grid item xs={12}>
 					<Typography variant="overline">Rotation</Typography>
 					<Slider
-						value={rotation}
+						value={cropImage.rotation}
 						min={0}
 						max={360}
 						step={1}
 						aria-labelledby="Rotation"
-						onChange={(_, rotation): void => setRotation(rotation as number)}
+						onChange={(_, rotation): void => cropImage.setRotation(rotation as number)}
 					/>
 				</Grid>
 			</Grid>

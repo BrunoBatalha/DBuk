@@ -1,5 +1,4 @@
-import { ListCategoriesUseCase } from 'data/usecases/ListCategoriesUseCase';
-import { PublishPostUseCase } from 'data/usecases/publish-post/PublishPostUseCase';
+import { ListCategoriesUseCase, PublishPostUseCase } from 'data/usecases';
 import { HttpClientAdapter } from 'infra/adapters/HttpClientAdapter';
 import { PublishPost } from 'presentation/views/publish-post/publish-post';
 

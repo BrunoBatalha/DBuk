@@ -1,5 +1,7 @@
-import { PostDomain } from 'domain/post/PostDomain';
+import Dtos from 'data/Dtos';
+import { PostDomain } from 'domain/entities';
 
-export class ListPostsDto {
-	list: PostDomain[] = [];
-}
+export type ListPostsDto = {
+	list: PostDomain[];
+	pagination: Dtos.PaginationDto;
+};

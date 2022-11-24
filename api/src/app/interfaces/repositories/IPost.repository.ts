@@ -1,10 +1,16 @@
 import { Post } from '@/domain/entities/Post';
-import { IRepositoryIncludes } from '@/infra/interfaces/repositories/IRepositoryIncludes';
-import { PostRepository } from '@/infra/repositories';
 import { IRepositoryTransaction } from './IRepositoryTransaction';
 
-export interface IPostRepository extends IRepositoryTransaction, IRepositoryIncludes<IPostRepository> {
+export interface IPostRepository extends IRepositoryTransaction {
 	create(post: Post): Promise<Post>;
-	list(): Promise<Post[]>;
-	listOrderBy(params: PostRepository.ListOrderByParams): Promise<Post[]>;
+	listOrderBy(params: IPostRepository.ListOrderByParams): Promise<{ total: number; list: Post[] }>;
+}
+
+export namespace IPostRepository {
+	export type ListOrderByParams = {
+		orderBy: 'DESC' | 'ASC';
+		limit: number;
+		offset: number;
+		parameterToOrder: string;
+	};
 }
