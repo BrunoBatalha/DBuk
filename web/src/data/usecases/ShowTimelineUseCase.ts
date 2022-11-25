@@ -5,7 +5,7 @@ import { AuthService } from 'infra/services/AuthService';
 import { IShowTimelineUseCase } from 'presentation/interfaces/usecases/IShowTimelineUseCase';
 
 export class ShowTimelineUseCase implements IShowTimelineUseCase {
-	constructor(private httpClient: IHttpClientAdapter) { }
+	constructor(private httpClient: IHttpClientAdapter) {}
 
 	async execute(page: number, perPage: number): Promise<Dtos.ListPostsDto> {
 		const response = await this.httpClient.get<ListPostsResponse>('posts', {

@@ -1,16 +1,10 @@
 {
-	"editor.codeActionsOnSave": [
-		"source.addMissingImports",
-		"source.fixAll.eslint",
-		"source.organizeImports",
-	],
-	"editor.detectIndentation": false,
-	"editor.tabSize": 2,
-	"editor.insertSpaces": false,
-	"eslint.alwaysShowStatus": true,
-	// turn off default vs code formatter
-	"html.format.enable": false,
-	// enable formatting by default
-	"editor.formatOnSave": true,
-	"editor.formatOnPaste": true,
+  "editor.codeActionsOnSave": [
+    "source.addMissingImports",
+    "source.fixAll.eslint",
+    "source.organizeImports",
+  ],
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingEmptyBraces": false
 }

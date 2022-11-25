@@ -3,43 +3,46 @@ import Dialog from '@mui/material/Dialog';
 import { TransitionProps } from '@mui/material/transitions';
 import { CloseIcon } from 'presentation/components/icons';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
-	onCancel(): void;
-	onConfirm(): void;
-	isOpen: boolean;
-	children: React.ReactNode;
+  onCancel(): void;
+  onConfirm(): void;
+  isOpen: boolean;
+  children: React.ReactNode;
 };
 
 export function DialogDefault({ children, onCancel, onConfirm, isOpen }: Props): React.ReactElement {
-	return (
-		<Dialog fullScreen open={isOpen} TransitionComponent={Transition}>
-			<AppBar sx={{ position: 'relative' }}>
-				<Toolbar>
-					<IconButton edge="start" color="inherit" onClick={onCancel}>
-						<CloseIcon />
-					</IconButton>
+  const { t } = useTranslation();
 
-					<Typography sx={{ ml: 2, flex: 1 }} variant="h6">
-						Crop image
-					</Typography>
+  return (
+    <Dialog fullScreen open={isOpen} TransitionComponent={Transition}>
+      <AppBar sx={{ position: 'relative' }}>
+        <Toolbar>
+          <IconButton edge="start" color="inherit" onClick={onCancel}>
+            <CloseIcon />
+          </IconButton>
 
-					<Button autoFocus color="inherit" onClick={onConfirm}>
-						Save
-					</Button>
-				</Toolbar>
-			</AppBar>
+          <Typography sx={{ ml: 2, flex: 1 }} variant="h6">
+            {t('new_publish.edit_image')}
+          </Typography>
 
-			<Box sx={{ padding: (theme) => theme.spacing(4) }}>{children}</Box>
-		</Dialog>
-	);
+          <Button autoFocus color="inherit" onClick={onConfirm} data-testId="btn-save-crop-image">
+            {t('new_publish.save')}
+          </Button>
+        </Toolbar>
+      </AppBar>
+
+      <Box sx={{ padding: (theme) => theme.spacing(4) }}>{children}</Box>
+    </Dialog>
+  );
 }
 
 const Transition = React.forwardRef(function Transition(
-	props: TransitionProps & {
-		children: React.ReactElement;
-	},
-	ref: React.Ref<unknown>
+  props: TransitionProps & {
+    children: React.ReactElement;
+  },
+  ref: React.Ref<unknown>
 ) {
-	return <Slide direction="up" ref={ref} {...props} />;
+  return <Slide direction="up" ref={ref} {...props} />;
 });

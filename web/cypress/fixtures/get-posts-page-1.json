@@ -1,0 +1,67 @@
+{
+  "list": [
+    {
+      "id": 1,
+      "image": "",
+      "user": {
+        "id": 1,
+        "username": "username 1"
+      },
+      "reaction": "like",
+      "createdAt": "2022-01-01",
+      "isReacted": false,
+      "amountReactions": 1
+    },
+    {
+      "id": 2,
+      "image": "",
+      "user": {
+        "id": 1,
+        "username": "username 1"
+      },
+      "reaction": "like",
+      "createdAt": "2022-01-01",
+      "isReacted": false,
+      "amountReactions": 2
+    },
+    {
+      "id": 3,
+      "image": "",
+      "user": {
+        "id": 1,
+        "username": "username 1"
+      },
+      "reaction": "like",
+      "createdAt": "2022-01-01",
+      "isReacted": false,
+      "amountReactions": 3
+    },
+    {
+      "id": 4,
+      "image": "",
+      "user": {
+        "id": 1,
+        "username": "username 1"
+      },
+      "reaction": "like",
+      "createdAt": "2022-01-01",
+      "isReacted": false,
+      "amountReactions": 4
+    },
+    {
+      "id": 5,
+      "image": "",
+      "user": {
+        "id": 1,
+        "username": "username 1"
+      },
+      "reaction": "like",
+      "createdAt": "2022-01-01",
+      "isReacted": false,
+      "amountReactions": 5
+    }
+  ],
+  "pagination": {
+    "total": 7
+  }
+}

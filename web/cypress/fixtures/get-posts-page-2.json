@@ -1,0 +1,31 @@
+{
+  "list": [
+    {
+      "id": 6,
+      "image": "",
+      "user": {
+        "id": 1,
+        "username": "username 1"
+      },
+      "reaction": "like",
+      "createdAt": "2022-01-01",
+      "isReacted": false,
+      "amountReactions": 6
+    },
+    {
+      "id": 7,
+      "image": "",
+      "user": {
+        "id": 1,
+        "username": "username 1"
+      },
+      "reaction": "like",
+      "createdAt": "2022-01-01",
+      "isReacted": false,
+      "amountReactions": 7
+    }
+  ],
+  "pagination": {
+    "total": 7
+  }
+}
