@@ -9,13 +9,13 @@ import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 
 export {
-	NewspaperIcon,
-	PostAddIcon,
-	MoreHorizOutlinedIcon,
-	ThumbUpAltOutlinedIcon,
-	ChatBubbleOutlineOutlinedIcon,
-	ThumbUpAltIcon,
-	FavoriteIcon,
-	PhotoCameraIcon,
-	CloseIcon
+  NewspaperIcon,
+  PostAddIcon,
+  MoreHorizOutlinedIcon,
+  ThumbUpAltOutlinedIcon,
+  ChatBubbleOutlineOutlinedIcon,
+  ThumbUpAltIcon,
+  FavoriteIcon,
+  PhotoCameraIcon,
+  CloseIcon
 };

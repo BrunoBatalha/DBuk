@@ -1,4 +1,4 @@
 export enum ReactionEnum {
-	Like = 'like',
-	Love = 'love'
+  Like = 'like',
+  Love = 'love'
 }

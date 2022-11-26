@@ -1,3 +1,3 @@
 export type PaginationDto = {
-	total: number;
+  total: number;
 };
