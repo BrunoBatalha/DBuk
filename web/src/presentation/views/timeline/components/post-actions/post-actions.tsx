@@ -24,7 +24,7 @@ export function PostActions({ isReacted, onReactPost }: Props): JSX.Element {
         size="large"
         startIcon={getIconReacted()}
         onClick={() => onReactPost()}
-        data-testId="btn-like"
+        data-testid="btn-like"
       >
         {t('timeline.post.like')}
       </Button>

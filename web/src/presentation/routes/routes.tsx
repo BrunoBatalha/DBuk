@@ -1,3 +1,4 @@
+import { Box, CircularProgress } from '@mui/material';
 import { AuthService } from 'infra/services/AuthService';
 import { BottomNavigationMain } from 'presentation/components/bottom-navigation-main/bottom-navigation-main';
 import { Container } from 'presentation/components/container/container';
@@ -31,5 +32,22 @@ function PrivateRoute({ element }: { element: JSX.Element }): JSX.Element {
     return <Navigate to="/register" />;
   }
 
-  return <React.Suspense fallback={<>loading</>}>{element}</React.Suspense>;
+  return (
+    <React.Suspense
+      fallback={
+        <Box
+          sx={{
+            position: 'absolute',
+            left: '50%',
+            top: '50%',
+            transform: 'transform(-50%, -50%)'
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      }
+    >
+      {element}
+    </React.Suspense>
+  );
 }

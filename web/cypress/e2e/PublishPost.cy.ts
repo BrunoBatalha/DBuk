@@ -4,17 +4,17 @@ describe('PublishPost', () => {
   beforeEach(() => {
     mockRequests();
     passRegisterPage();
-    cy.get('[data-testId=menu-option-publish]').click();
+    cy.get('[data-testid=menu-option-publish]').click();
   });
 
   it('Should be disabled publish button when select categories', () => {
     selectCategories();
-    cy.get('[data-testId=btn-submit]').should('be.disabled');
+    cy.get('[data-testid=btn-submit]').should('be.disabled');
   });
 
   it('Should be disabled publish button when select file image', () => {
-    cy.get('[data-testId=input-file-upload]').attachFile('image-300x300.png');
-    cy.get('[data-testId=btn-submit]').should('be.disabled');
+    cy.get('[data-testid=input-file-upload]').attachFile('image-300x300.png');
+    cy.get('[data-testid=btn-submit]').should('be.disabled');
   });
 
   it('Should be change pathname', () => {
@@ -24,9 +24,9 @@ describe('PublishPost', () => {
   it('Should publish post', () => {
     selectCategories();
 
-    cy.get('[data-testId=input-file-upload]').attachFile('image-300x300.png');
-    cy.get('[data-testId=btn-save-crop-image]').click();
-    cy.get('[data-testId=btn-submit]').click();
+    cy.get('[data-testid=input-file-upload]').attachFile('image-300x300.png');
+    cy.get('[data-testid=btn-save-crop-image]').click();
+    cy.get('[data-testid=btn-submit]').click();
 
     cy.get('@request-create-post.all').should('have.length', 1);
   });
@@ -40,9 +40,9 @@ function mockRequests() {
 }
 
 function selectCategories() {
-  cy.get('[data-testId=select-category]').click();
-  cy.get('[data-testId=select-category-item]').should('have.length', 2);
-  cy.get('[data-testId=select-category-item]').first().click();
-  cy.get('[data-testId=select-category-item]').last().click();
+  cy.get('[data-testid=select-category]').click();
+  cy.get('[data-testid=select-category-item]').should('have.length', 2);
+  cy.get('[data-testid=select-category-item]').first().click();
+  cy.get('[data-testid=select-category-item]').last().click();
   cy.get('body').type('{esc}');
 }

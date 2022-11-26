@@ -38,7 +38,7 @@ export function Register({ registerUseCase }: Props): JSX.Element {
           sx={InputSx}
           value={username}
           onChange={({ target: { value } }): void => setUsername(value)}
-          data-testId="input-username"
+          data-testid="input-username"
         />
       </Grid>
       <Grid item xs={12}>
@@ -48,7 +48,7 @@ export function Register({ registerUseCase }: Props): JSX.Element {
           sx={InputSx}
           value={password}
           onChange={({ target: { value } }): void => setPassword(value)}
-          data-testId="input-password"
+          data-testid="input-password"
         />
       </Grid>
       <Grid item xs={12}>
@@ -57,7 +57,7 @@ export function Register({ registerUseCase }: Props): JSX.Element {
           variant="contained"
           size="large"
           onClick={submit}
-          data-testId="btn-submit"
+          data-testid="btn-submit"
           disabled={!canSubmit()}
         >
           Confirm

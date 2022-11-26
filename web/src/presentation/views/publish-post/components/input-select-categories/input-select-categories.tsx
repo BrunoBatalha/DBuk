@@ -42,10 +42,10 @@ export function InputSelectCategories({ onSelect, categories, categoriesIdSelect
         onChange={onChangeCategories}
         input={<OutlinedInput label={t('new_publish.select_category')} />}
         renderValue={renderValue}
-        data-testId="select-category"
+        data-testid="select-category"
       >
         {categories.map((c) => (
-          <MenuItem key={c.id} value={c.id} data-testId="select-category-item">
+          <MenuItem key={c.id} value={c.id} data-testid="select-category-item">
             <Checkbox checked={categoriesIdSelected.indexOf(c.id) > -1} />
             <ListItemText primary={t(`new_publish.categories.${c.id}`)} />
           </MenuItem>

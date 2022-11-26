@@ -72,7 +72,7 @@ export function Timeline({ showTimelineUseCase, reactPostUseCase }: Props) {
   }, [pagination.page]);
 
   return (
-    <div id="scrollable" style={{ maxHeight: 670, overflow: 'auto' }} data-testId="container-posts">
+    <div id="scrollable" style={{ maxHeight: 670, overflow: 'auto' }} data-testid="container-posts">
       <InfiniteScroll
         dataLength={posts.length}
         next={pagination.nextPage}
@@ -82,7 +82,7 @@ export function Timeline({ showTimelineUseCase, reactPostUseCase }: Props) {
         refreshFunction={resetListPosts}
       >
         {posts.map((p) => (
-          <Box key={p.id} sx={{ marginTop: (theme) => theme.spacing(4) }} data-testId="section-post">
+          <Box key={p.id} sx={{ marginTop: (theme) => theme.spacing(4) }} data-testid="section-post">
             <Post post={p} onReactPost={onReactPost} />
           </Box>
         ))}

@@ -86,7 +86,7 @@ export function PublishPost({ listCategoriesUseCase, publishPostUseCase }: Props
             size="large"
             type="submit"
             disabled={form.imageCropped === null}
-            data-testId="btn-submit"
+            data-testid="btn-submit"
           >
             {t('new_publish.publish')}
           </Button>
@@ -98,7 +98,7 @@ export function PublishPost({ listCategoriesUseCase, publishPostUseCase }: Props
               type="file"
               accept="image/png, image/jpeg"
               onChange={onChangeFile}
-              data-testId="input-file-upload"
+              data-testid="input-file-upload"
             />
             <PhotoCameraIcon fontSize="large" />
           </IconButton>

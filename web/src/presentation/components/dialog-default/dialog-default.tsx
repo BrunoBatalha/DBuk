@@ -27,7 +27,7 @@ export function DialogDefault({ children, onCancel, onConfirm, isOpen }: Props):
             {t('new_publish.edit_image')}
           </Typography>
 
-          <Button autoFocus color="inherit" onClick={onConfirm} data-testId="btn-save-crop-image">
+          <Button autoFocus color="inherit" onClick={onConfirm} data-testid="btn-save-crop-image">
             {t('new_publish.save')}
           </Button>
         </Toolbar>

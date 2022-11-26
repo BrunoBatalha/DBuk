@@ -7,7 +7,7 @@ describe('Timeline', () => {
 
     passRegisterPage();
 
-    cy.get('[data-testId=btn-like]').first().click();
+    cy.get('[data-testid=btn-like]').first().click();
     cy.get('@request-react-post.all').should('have.length', 1);
   });
 
