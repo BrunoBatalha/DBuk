@@ -1,4 +1,4 @@
-import { Avatar, Box, Grid, Link } from '@mui/material';
+import { Avatar, Box, Grid } from '@mui/material';
 import { ThumbUpAltIcon } from 'presentation/components/icons';
 import { useTranslation } from 'react-i18next';
 import { styles } from './styles';
@@ -27,9 +27,9 @@ export function PostInteractions({ totalComments, totalReactions }: Props): JSX.
         </Box>
       </Grid>
       <Grid item container xs={3} justifyContent="flex-end">
-        <Link sx={styles.AmountComments} href="#" underline="hover">
+        {/* <Link sx={styles.AmountComments} href="#" underline="hover">
           {totalComments} {t('timeline.post.comments')}
-        </Link>
+        </Link> */}
       </Grid>
     </Grid>
   );

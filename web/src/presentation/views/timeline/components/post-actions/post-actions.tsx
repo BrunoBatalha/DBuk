@@ -1,5 +1,5 @@
 import { Button, Grid } from '@mui/material';
-import { ChatBubbleOutlineOutlinedIcon, ThumbUpAltIcon, ThumbUpAltOutlinedIcon } from 'presentation/components/icons';
+import { ThumbUpAltIcon, ThumbUpAltOutlinedIcon } from 'presentation/components/icons';
 import { useTranslation } from 'react-i18next';
 
 type Props = {
@@ -28,9 +28,9 @@ export function PostActions({ isReacted, onReactPost }: Props): JSX.Element {
       >
         {t('timeline.post.like')}
       </Button>
-      <Button sx={{ flex: 1 }} size="large" startIcon={<ChatBubbleOutlineOutlinedIcon sx={{ fontSize: '26px' }} />}>
+      {/* <Button sx={{ flex: 1 }} size="large" startIcon={<ChatBubbleOutlineOutlinedIcon sx={{ fontSize: '26px' }} />}>
         {t('timeline.post.comment')}
-      </Button>
+      </Button> */}
     </Grid>
   );
 }

@@ -1,5 +1,4 @@
-import { Avatar, Box, Grid, IconButton } from '@mui/material';
-import { MoreHorizOutlinedIcon } from 'presentation/components/icons';
+import { Avatar, Box, Grid } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { styles } from './styles';
 
@@ -13,11 +12,11 @@ export function PostHeader({ publishedDate, username }: Props): JSX.Element {
 
   return (
     <Grid container>
-      <Grid item container justifyContent="center" xs={1}>
-        <Avatar sx={styles.Avatar} alt={username} src="https://via.placeholder.com/300/000/808080" />
+      <Grid item container justifyContent="center" xs={2} sm={1}>
+        <Avatar sx={styles.Avatar} alt={username} />
       </Grid>
 
-      <Grid item container xs={10}>
+      <Grid item container xs={9} sm={10}>
         <Grid item xs={12}>
           <Box component="span" sx={styles.Username}>
             {username}
@@ -32,9 +31,9 @@ export function PostHeader({ publishedDate, username }: Props): JSX.Element {
       </Grid>
 
       <Grid item container xs={1} direction="row" justifyContent="center" alignItems="center">
-        <IconButton color="primary">
+        {/* <IconButton color="primary">
           <MoreHorizOutlinedIcon />
-        </IconButton>
+        </IconButton> */}
       </Grid>
     </Grid>
   );

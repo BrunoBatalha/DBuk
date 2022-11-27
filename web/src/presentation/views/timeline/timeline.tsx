@@ -1,5 +1,7 @@
-import { Box, CircularProgress } from '@mui/material';
+import { Box, LinearProgress } from '@mui/material';
 import { PostDomain } from 'domain/entities';
+import { AlertDefault } from 'presentation/components/alert-default/alert-default';
+import { useAlert } from 'presentation/hooks/useAlert';
 import { usePagination } from 'presentation/hooks/usePagination';
 import { IReactPostUseCase } from 'presentation/interfaces/usecases/IReactPostUseCase';
 import { IShowTimelineUseCase } from 'presentation/interfaces/usecases/IShowTimelineUseCase';
@@ -15,10 +17,9 @@ type Props = {
 
 export function Timeline({ showTimelineUseCase, reactPostUseCase }: Props) {
   const [posts, setPosts] = useState<PostDomain[]>([]);
-  const pagination = usePagination({
-    initialPage: 0,
-    itemsPerPage: 5
-  });
+  const [isLoading, setLoading] = useState(true);
+  const { alert, setAlert } = useAlert();
+  const pagination = usePagination({ initialPage: 0, itemsPerPage: 5 });
 
   async function listPosts({ page, initialPosts }: { page: number; initialPosts: PostDomain[] }) {
     const {
@@ -61,7 +62,9 @@ export function Timeline({ showTimelineUseCase, reactPostUseCase }: Props) {
 
   useEffect(() => {
     if (posts.length === 0) {
-      listPosts({ page: 0, initialPosts: posts });
+      listPosts({ page: 0, initialPosts: posts })
+        .catch(() => setAlert({ isOpen: true, message: 'connection_failed', type: 'error' }))
+        .finally(() => setLoading(false));
     }
   }, []);
 
@@ -73,11 +76,20 @@ export function Timeline({ showTimelineUseCase, reactPostUseCase }: Props) {
 
   return (
     <div id="scrollable" style={{ maxHeight: 670, overflow: 'auto' }} data-testid="container-posts">
+      {isLoading && <LinearProgress />}
+
+      <AlertDefault
+        isOpen={alert.isOpen}
+        message={alert.message}
+        type={alert.type}
+        onClose={() => setAlert((prev) => ({ ...prev, isOpen: false }))}
+      />
+
       <InfiniteScroll
         dataLength={posts.length}
         next={pagination.nextPage}
         hasMore={posts.length < pagination.total}
-        loader={<CircularProgress />}
+        loader={<LinearProgress />}
         scrollableTarget="scrollable"
         refreshFunction={resetListPosts}
       >

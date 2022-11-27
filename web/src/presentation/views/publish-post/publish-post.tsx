@@ -1,7 +1,9 @@
-import { Box, Button, Grid, IconButton } from '@mui/material';
+import { Box, Button, Grid, IconButton, LinearProgress } from '@mui/material';
 import { CategoryDomain } from 'domain/entities';
+import { AlertDefault } from 'presentation/components/alert-default/alert-default';
 import { DialogDefault } from 'presentation/components/dialog-default/dialog-default';
 import { PhotoCameraIcon } from 'presentation/components/icons';
+import { useAlert } from 'presentation/hooks/useAlert';
 import { IListCategoriesUseCase, IPublishPostUseCase } from 'presentation/interfaces/usecases';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -29,30 +31,36 @@ export function PublishPost({ listCategoriesUseCase, publishPostUseCase }: Props
   const [imagePreSelected, setImagePreSelected] = useState<ImageSelection>(null);
   const [isOpenDialogCropImage, setIsOpenDialogCropImage] = useState<boolean>(false);
   const [categories, setCategories] = useState<CategoryDomain[]>([]);
-  const [form, setForm] = useState<FormStatePublishPost>({
-    imageCropped: null,
-    categories: []
-  });
+  const [form, setForm] = useState<FormStatePublishPost>({ imageCropped: null, categories: [] });
+  const [isLoading, setLoading] = useState(true);
+  const { alert, setAlert } = useAlert();
 
   useEffect(() => {
-    listCategoriesUseCase.execute().then((loadedCategories) => {
-      setCategories(loadedCategories);
-    });
+    listCategoriesUseCase
+      .execute()
+      .then((loadedCategories) => setCategories(loadedCategories))
+      .catch(() => setAlert({ isOpen: true, type: 'error', message: t('connection_failed') }))
+      .finally(() => setLoading(false));
   }, []);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
-    if (!form.imageCropped) {
-      return;
+    setLoading(true);
+    setAlert((prev) => ({ ...prev, isOpen: false }));
+
+    try {
+      await publishPostUseCase.execute({
+        image: form.imageCropped!.blob,
+        categoriesIds: form.categories
+      });
+      setAlert({ isOpen: true, type: 'success', message: t('new_publish.publication_successfully') });
+    } catch (error) {
+      setAlert({ isOpen: true, type: 'error', message: t('new_publish.publication_error') });
+    } finally {
+      setForm({ imageCropped: null, categories: [] });
+      setImagePreSelected(null);
+      setLoading(false);
     }
-
-    await publishPostUseCase.execute({
-      image: form.imageCropped.blob,
-      categoriesIds: form.categories
-    });
-
-    setForm({ imageCropped: null, categories: [] });
-    setImagePreSelected(null);
   }
 
   function onChangeFile({ target }: React.ChangeEvent<HTMLInputElement>) {
@@ -66,8 +74,23 @@ export function PublishPost({ listCategoriesUseCase, publishPostUseCase }: Props
     }
   }
 
+  function canSubmit(): boolean {
+    return !!(form.categories.length !== 0 && form.imageCropped && !isLoading);
+  }
+
   return (
     <Box sx={styles.Form} component="form" onSubmit={onSubmit}>
+      <Box sx={{ width: '100%' }}>
+        {isLoading && <LinearProgress />}
+
+        <AlertDefault
+          isOpen={alert.isOpen}
+          message={alert.message}
+          type={alert.type}
+          onClose={() => setAlert((prev) => ({ ...prev, isOpen: false }))}
+        />
+      </Box>
+
       <Box component="img" sx={styles.Image} src={form.imageCropped?.url} />
 
       <InputSelectCategories
@@ -85,7 +108,7 @@ export function PublishPost({ listCategoriesUseCase, publishPostUseCase }: Props
             variant="contained"
             size="large"
             type="submit"
-            disabled={form.imageCropped === null}
+            disabled={!canSubmit()}
             data-testid="btn-submit"
           >
             {t('new_publish.publish')}

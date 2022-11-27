@@ -13,7 +13,7 @@ describe('PublishPost', () => {
   });
 
   it('Should be disabled publish button when select file image', () => {
-    cy.get('[data-testid=input-file-upload]').attachFile('image-300x300.png');
+    passSelectFile();
     cy.get('[data-testid=btn-submit]').should('be.disabled');
   });
 
@@ -24,13 +24,17 @@ describe('PublishPost', () => {
   it('Should publish post', () => {
     selectCategories();
 
-    cy.get('[data-testid=input-file-upload]').attachFile('image-300x300.png');
-    cy.get('[data-testid=btn-save-crop-image]').click();
+    passSelectFile();
     cy.get('[data-testid=btn-submit]').click();
 
     cy.get('@request-create-post.all').should('have.length', 1);
   });
 });
+
+function passSelectFile() {
+  cy.get('[data-testid=input-file-upload]').attachFile('image-300x300.png');
+  cy.get('[data-testid=btn-save-crop-image]').click();
+}
 
 function mockRequests() {
   cy.intercept({ method: 'POST', url: /users$/ }, {});
