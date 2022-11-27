@@ -31,11 +31,6 @@ export function Timeline({ showTimelineUseCase, reactPostUseCase }: Props) {
     setPosts([...initialPosts, ...list]);
   }
 
-  async function resetListPosts() {
-    pagination.reset();
-    listPosts({ page: 0, initialPosts: [] });
-  }
-
   async function onReactPost(postId: number) {
     await reactPostUseCase.execute({ postId: postId });
 
@@ -91,7 +86,7 @@ export function Timeline({ showTimelineUseCase, reactPostUseCase }: Props) {
         hasMore={posts.length < pagination.total}
         loader={<LinearProgress />}
         scrollableTarget="scrollable"
-        refreshFunction={resetListPosts}
+        scrollThreshold={0.9}
       >
         {posts.map((p) => (
           <Box key={p.id} sx={{ marginTop: (theme) => theme.spacing(4) }} data-testid="section-post">

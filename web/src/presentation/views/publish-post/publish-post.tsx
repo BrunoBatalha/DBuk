@@ -1,8 +1,10 @@
 import { Box, Button, Grid, IconButton, LinearProgress } from '@mui/material';
+import imageCompression from 'browser-image-compression';
 import { CategoryDomain } from 'domain/entities';
 import { AlertDefault } from 'presentation/components/alert-default/alert-default';
 import { DialogDefault } from 'presentation/components/dialog-default/dialog-default';
 import { PhotoCameraIcon } from 'presentation/components/icons';
+import { LinearProgressWithLabel } from 'presentation/components/linear-progress-with-label/linear-progress-with-label';
 import { useAlert } from 'presentation/hooks/useAlert';
 import { IListCategoriesUseCase, IPublishPostUseCase } from 'presentation/interfaces/usecases';
 import { useEffect, useState } from 'react';
@@ -21,7 +23,7 @@ type FormStatePublishPost = {
   categories: number[];
 };
 
-export type ImageSelection = {
+type ImageSelection = {
   blob: Blob;
   url: string;
 } | null;
@@ -33,6 +35,8 @@ export function PublishPost({ listCategoriesUseCase, publishPostUseCase }: Props
   const [categories, setCategories] = useState<CategoryDomain[]>([]);
   const [form, setForm] = useState<FormStatePublishPost>({ imageCropped: null, categories: [] });
   const [isLoading, setLoading] = useState(true);
+  const [croppedImage, setCroppedImage] = useState<Blob>();
+  const [progressCompression, setProgressCompression] = useState(0);
   const { alert, setAlert } = useAlert();
 
   useEffect(() => {
@@ -63,14 +67,44 @@ export function PublishPost({ listCategoriesUseCase, publishPostUseCase }: Props
     }
   }
 
-  function onChangeFile({ target }: React.ChangeEvent<HTMLInputElement>) {
-    if (target.files && target.files.length !== 0) {
+  async function onChangeFile({ target }: React.ChangeEvent<HTMLInputElement>) {
+    setAlert((prev) => ({ ...prev, isOpen: false }));
+
+    if (!target.files || target.files.length === 0) {
+      return;
+    }
+    try {
+      const compressedFile = await compressImage(target.files[0]);
+
       setImagePreSelected({
-        blob: target.files[0],
-        url: URL.createObjectURL(target.files[0])
+        blob: compressedFile,
+        url: URL.createObjectURL(compressedFile)
       });
       setIsOpenDialogCropImage(true);
       target.value = '';
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function compressImage(imageBlob: Blob) {
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+      onProgress: (percentage: number) => {
+        setProgressCompression(percentage);
+        if (percentage === 100) {
+          setTimeout(() => setProgressCompression(0), 1000);
+        }
+      }
+    };
+
+    try {
+      const file = new File([imageBlob], '', { type: 'image/png' });
+      return await imageCompression(file, options);
+    } catch (error) {
+      throw error;
     }
   }
 
@@ -82,6 +116,7 @@ export function PublishPost({ listCategoriesUseCase, publishPostUseCase }: Props
     <Box sx={styles.Form} component="form" onSubmit={onSubmit}>
       <Box sx={{ width: '100%' }}>
         {isLoading && <LinearProgress />}
+        {progressCompression != 0 && <LinearProgressWithLabel value={progressCompression} />}
 
         <AlertDefault
           isOpen={alert.isOpen}
@@ -136,14 +171,22 @@ export function PublishPost({ listCategoriesUseCase, publishPostUseCase }: Props
           setIsOpenDialogCropImage(false);
         }}
         onConfirm={(): void => {
+          if (!croppedImage) {
+            return;
+          }
+
           setIsOpenDialogCropImage(false);
+          setForm((prev) => ({
+            ...prev,
+            imageCropped: {
+              blob: croppedImage!,
+              url: URL.createObjectURL(croppedImage)
+            }
+          }));
         }}
       >
         {imagePreSelected && (
-          <CropImage
-            urlImage={imagePreSelected.url}
-            onChangeImage={(img) => setForm((prev) => ({ ...prev, imageCropped: img }))}
-          />
+          <CropImage urlImage={imagePreSelected.url} onChangeImage={(img) => setCroppedImage(img)} />
         )}
       </DialogDefault>
     </Box>

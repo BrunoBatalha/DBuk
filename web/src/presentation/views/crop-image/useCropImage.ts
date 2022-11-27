@@ -1,39 +1,44 @@
-import { useEffect, useState } from 'react';
+import { Blob } from 'buffer';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Area } from 'react-easy-crop';
-import { ImageSelection } from '../publish-post/publish-post';
 
 type Props = {
   urlImage: string;
-  onChangeImage(image: ImageSelection): void;
+  onChangeImage(image: Blob): void;
 };
 
 export function useCropImage({ urlImage, onChangeImage }: Props) {
   const [rotation, setRotation] = useState<number>(0);
-  const [croppedImage, setCroppedImage] = useState<Blob | null>(null);
+  const [zoom, setZoom] = useState<number>(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area>();
 
   useEffect(() => {
-    if (!croppedImage) {
+    saveCropped();
+  }, [croppedAreaPixels]);
+
+  const onCropComplete = useCallback(async (_: Area, croppedAreaPixels: Area) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
+
+  const calculation = useMemo(async () => {
+    if (!croppedAreaPixels) {
       return;
     }
+    return await getCroppedImg(urlImage, croppedAreaPixels!, rotation);
+  }, [croppedAreaPixels, rotation, urlImage]);
 
-    onChangeImage({
-      blob: croppedImage!,
-      url: URL.createObjectURL(croppedImage!)
-    });
-  }, [croppedImage]);
-
-  function onCropComplete(_: Area, croppedAreaPixels: Area) {
-    saveCroppedImage(croppedAreaPixels);
-  }
-
-  async function saveCroppedImage(croppedAreaPixels: Area) {
+  const saveCropped = useCallback(async () => {
     try {
-      const newCroppedImage = await getCroppedImg(urlImage, croppedAreaPixels);
-      setCroppedImage(newCroppedImage);
+      const newCroppedImage = await calculation;
+      if (!newCroppedImage) {
+        return;
+      }
+
+      onChangeImage(newCroppedImage);
     } catch (e) {
       console.error(e);
     }
-  }
+  }, [croppedAreaPixels, rotation]);
 
   function createImage(url: string): Promise<HTMLImageElement> {
     return new Promise((resolve, reject) => {
@@ -103,17 +108,20 @@ export function useCropImage({ urlImage, onChangeImage }: Props) {
     // As a blob
     return new Promise((resolve) => {
       canvas.toBlob((file) => {
-        if (file) {
-          resolve(file);
+        if (!file) {
+          throw new Error("Can't crop image");
         }
+
+        resolve(file);
       }, 'image/png');
     });
   }
 
   return {
-    getCroppedImg,
     onCropComplete,
     setRotation,
-    rotation
+    rotation,
+    zoom,
+    setZoom
   };
 }

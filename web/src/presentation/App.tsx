@@ -20,7 +20,7 @@ const theme = createTheme({
             borderRadius: 4,
             backgroundColor: 'transparent',
             minHeight: 24,
-            border: '3px solid #2b2b2b1a'
+            border: '3px solid #6765651a'
           },
           '&::-webkit-scrollbar-thumb:focus, & *::-webkit-scrollbar-thumb:focus': {
             backgroundColor: '#959595'

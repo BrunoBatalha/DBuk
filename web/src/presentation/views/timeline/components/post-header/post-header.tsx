@@ -10,10 +10,35 @@ type Props = {
 export function PostHeader({ publishedDate, username }: Props): JSX.Element {
   const { t } = useTranslation();
 
+  function stringToColor(string: string) {
+    let hash = 0;
+    for (let i = 0; i < string.length; i += 1) {
+      hash = string.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    let color = '#';
+    for (let i = 0; i < 3; i += 1) {
+      const value = (hash >> (i * 8)) & 0xff;
+      color += `00${value.toString(16)}`.slice(-2);
+    }
+
+    return color;
+  }
+
+  function stringAvatar(name: string) {
+    return {
+      sx: {
+        ...styles.Avatar,
+        bgcolor: stringToColor(name)
+      },
+      children: name[0]
+    };
+  }
+
   return (
     <Grid container>
       <Grid item container justifyContent="center" xs={2} sm={1}>
-        <Avatar sx={styles.Avatar} alt={username} />
+        <Avatar alt={username} {...stringAvatar(username)} />
       </Grid>
 
       <Grid item container xs={9} sm={10}>
