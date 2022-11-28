@@ -58,6 +58,7 @@ export function Register({ registerUseCase }: Props): JSX.Element {
           id="password"
           type={isShowingPassword ? 'text' : 'password'}
           value={password}
+          data-testid="input-password"
           onChange={({ target: { value } }): void => setPassword(value)}
           endAdornment={
             <InputAdornment position="end">
