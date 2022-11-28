@@ -30,7 +30,7 @@ export class Post {
 	}
 
 	get amountReactions(): number {
-		return this.reactions.length;
+		return this.usersReactions.length;
 	}
 
 	isReactedByUser(userId: number): boolean {

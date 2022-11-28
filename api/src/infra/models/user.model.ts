@@ -36,7 +36,7 @@ export const UserModel: SequelizeTableCreation = {
 
 		models.UserModel.belongsToMany(models.ReactionModel, {
 			through: models.PostUserReactionModel,
-			foreignKey: 'reactionId',
+			foreignKey: 'userId',
 			as: ModelAliasAssociationEnum.reactions
 		});
 	}

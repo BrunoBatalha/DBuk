@@ -28,7 +28,7 @@ export class PostRepository extends AbstractRepository implements IPostRepositor
 			.setOffset(params.offset)
 			.setOrderBy(params.orderBy)
 			.setParameterToOrder(params.parameterToOrder)
-			.addInclude(['user', 'reactions'])
+			.addInclude(['user', 'reactions', 'usersReactions'])
 			.list();
 
 		return {
@@ -44,7 +44,7 @@ export class PostRepository extends AbstractRepository implements IPostRepositor
 				createdAt: e.createdAt,
 				imageUri: e.imageUri,
 				reactions: e.reactions.map((r) => Reaction.create({ id: r.id, title: r.title as Reaction.ReactionEnum })),
-				usersReactions: e.reactions.map((r) => ({ userId: r.posts_users_reactions.userId })),
+				usersReactions: e.usersReactions.map((ur) => ({ userId: ur.id })),
 				user: User.create({ username: e.user.username, id: e.user.id, password: '', posts: [] })
 			})
 		);

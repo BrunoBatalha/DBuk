@@ -28,7 +28,7 @@ export const PostModel: SequelizeTableCreation = {
 
 		models.PostModel.belongsToMany(models.CategoryModel, {
 			through: models.PostCategoryModel,
-			foreignKey: 'categoryId',
+			foreignKey: 'postId',
 			as: ModelAliasAssociationEnum.categories
 		});
 
@@ -36,6 +36,12 @@ export const PostModel: SequelizeTableCreation = {
 			through: models.PostUserReactionModel,
 			foreignKey: 'postId',
 			as: ModelAliasAssociationEnum.reactions
+		});
+
+		models.PostModel.belongsToMany(models.UserModel, {
+			through: models.PostUserReactionModel,
+			foreignKey: 'postId',
+			as: ModelAliasAssociationEnum.usersReactions
 		});
 	}
 };

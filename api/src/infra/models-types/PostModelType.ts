@@ -5,6 +5,9 @@ export type PostModelType = {
 	imageUri: string;
 	user: UserModelType;
 	createdAt: Date;
+	usersReactions: Array<{
+		id: number;
+	}>;
 	reactions: Array<{
 		id: number;
 		title: string;

@@ -70,3 +70,13 @@ create table if not exists dbuk_db.posts_users_reactions (
 	constraint FK_posts_users_reactions_posts foreign key (postId) references dbuk_db.posts(id),
 	constraint FK_posts_users_reactions_reactions foreign key (reactionId) references dbuk_db.reactions(id)
 );
+
+
+-- create table if not exists dbuk_db.reactions_users (
+-- 	id int not null auto_increment,
+-- 	reactionId int not null,
+-- 	userId int not null,
+-- 	primary key(id),
+-- 	constraint FK_reactions_users_user foreign key (userId) references dbuk_db.users(id),
+-- 	constraint FK_reactions_users_reaction foreign key (reactionId) references dbuk_db.reactions(id)
+-- );

@@ -34,7 +34,7 @@ export class SequelizeSingleton {
 			port: Number(process.env.DB_PORT),
 			dialect: 'mysql',
 			// eslint-disable-next-line no-console
-			logging: console.log,
+			logging: false,
 			pool: {
 				max: 1,
 				maxUses: 1
